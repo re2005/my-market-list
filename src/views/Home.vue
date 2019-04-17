@@ -1,18 +1,282 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <section class="home"
+             :class="{'open': isOpen, 'user':!isGuest}">
+
+        <sign-up class="sign-up"
+                 v-if="isVisible('signUp')"
+                 @close="close" />
+
+        <log-in class="log-in"
+                v-if="isVisible('logIn')"
+                @close="close" />
+
+        <ui-header :config="{user: getUser, guest:isGuest}" />
+
+        <div v-if="isGuest"
+             class="guest-label">
+            <p>
+                This is an open list, you can add and remove items, or create your own list!
+            </p>
+            <button class="button primary"
+                    @click="open('signUp')">
+                Create my list
+            </button>
+            <button class="button slim"
+                    @click="open('logIn')">
+                Login
+            </button>
+        </div>
+
+        <div class="add">
+            <input v-model="item"
+                   placeholder="Strawberries"
+                   class="item"
+                   @keyup.enter="addItem()" />
+            <button @click="addItem()"
+                    :disabled="!item">
+                add
+            </button>
+        </div>
+
+        <ul class="suggest-list"
+            v-if="suggests.length !== 0">
+            <li
+                v-for="(suggest, index) in suggests"
+                :key="index"
+                @click="item = suggest;addItem()">
+                {{ suggest }}
+            </li>
+        </ul>
+
+        <div v-if="isLoading">
+            loading
+        </div>
+        <div v-else>
+            <div v-if="getList.length === 0">
+                Empty list :(
+            </div>
+
+            <ul v-else class="list">
+                <li v-for="(message, key) in getList"
+                    :key="key">
+                    <span class="item">{{ message }}</span>
+                    <span @click="removeItem(key)"
+                          class="delete">
+                        <img src="@/assets/icons/icon-close.svg" />
+                    </span>
+                </li>
+            </ul>
+
+        </div>
+
+    </section>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+    import {mapActions, mapGetters} from 'vuex';
+    import firebaseApp from 'firebase/app';
+    import 'firebase/database';
+    import UiHeader from '@/components/UiHeader';
+    import SignUp from '@/components/SignUp';
+    import LogIn from '@/components/LogIn';
 
-export default {
-  name: 'home',
-  components: {
-    HelloWorld
-  }
-}
+    export default {
+        name: 'home',
+        data() {
+            return {
+                item: undefined,
+                isOpen: undefined,
+                loading: false
+            };
+        },
+        components: {
+            UiHeader,
+            SignUp,
+            LogIn
+        },
+        computed: {
+            ...mapGetters([
+                'getList',
+                'getUser',
+                'getSuggestList',
+                'isLoading',
+                'isGuest'
+            ]),
+            suggests() {
+                if (!this.item || this.item.length < 2) return [];
+                let suggest = [];
+                const query = this.item.toLowerCase();
+                for (let item in this.getSuggestList) {
+                    if (this.getSuggestList.hasOwnProperty(item) && item.toLowerCase().indexOf(query) !== -1) suggest.push(item);
+                }
+                return suggest;
+            }
+        },
+        methods: {
+            isVisible(what) {
+                return this.isOpen === what;
+            },
+            close() {
+                this.isOpen = undefined;
+            },
+            open(what) {
+                this.isOpen = what;
+                window.ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'Navigation',
+                    eventAction: 'Open',
+                    eventLabel: what
+                });
+            },
+            ...mapActions(['getListFromApi']),
+            addItem() {
+                if (!this.item) return;
+                const newItem = this.item;
+                this.item = '';
+                firebaseApp.database().ref(this.getUser.uid).child('list').push(newItem);
+                firebaseApp.database().ref(this.getUser.uid).child('list_suggest').child(newItem).set({value: newItem});
+            },
+            removeItem(value) {
+                firebaseApp.database().ref(this.getUser.uid).child('list').child(value).remove();
+            }
+        }
+    };
 </script>
+
+<style lang="scss" scoped>
+
+    .home {
+        transition: transform .2s ease-in-out;
+
+        &.open {
+            transform: translateY(200px);
+        }
+    }
+
+    .guest-label {
+        z-index: -1;
+        padding: 30px 20px 10px;
+        background-color: #FFF7B4;
+
+        .button {
+            display: block;
+            margin: auto;
+            font-size: 1rem;
+
+            &.primary {
+                margin: 20px auto 6px;
+            }
+        }
+
+        p {
+            max-width: 300px;
+            margin: auto;
+        }
+    }
+
+    .add {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .item {
+            background: #F3F3F3;
+            border-radius: 0;
+            border-bottom-left-radius: 19.5px;
+            border-top-left-radius: 19.5px;
+            padding-left: 20px;
+            font-family: 'Dosis', sans-serif;
+
+            &::placeholder {
+                color: #CFCECE;
+            }
+        }
+
+        button {
+            margin-left: -2px;
+            color: white;
+            border: none;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 9.6px 14px;
+            border-bottom-right-radius: 19.5px;
+            border-top-right-radius: 19.5px;
+            background-image: linear-gradient(-180deg, #68CD1C 0%, #529E04 100%);
+
+            &:disabled {
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    .suggest-list {
+        background: #F5F5F5;
+        border: 1px solid #e5e6e9;
+        list-style: none;
+        text-align: left;
+        padding: 0;
+        max-height: 174px;
+        overflow: auto;
+        max-width: 260px;
+        margin: 10px auto;
+
+        li {
+            border-bottom: 1px solid #dfe0e3;
+            padding: 10px;
+            cursor: pointer;
+
+            &:last-child {
+                border: none;
+            }
+        }
+    }
+
+    .list {
+        list-style: none;
+        margin: 20px auto;
+        padding: 0 0 40px;
+        display: flex;
+        flex-direction: column-reverse;
+        max-width: 300px;
+
+        li {
+            flex: 1;
+            margin: 10px 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 0 0 10px;
+            line-height: 1.4rem;
+            border-radius: 8px;
+            overflow: hidden;
+            align-items: center;
+            background: #FFFFFF;
+            border: 1px solid #D8D8D8;
+
+            .item {
+                max-width: 80%;
+                text-align: left;
+            }
+
+            .delete {
+
+                background: #FF0C38;
+                border-radius: 8px;
+                margin: 10px;
+                width: 26px;
+                height: 26px;
+                color: white;
+                font-weight: bold;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &:hover {
+                    opacity: .5;
+                }
+            }
+        }
+    }
+</style>
