@@ -71,19 +71,19 @@
 
         <footer>
             <p>
-                My Market List 2019 - Made with ❤ in Amsterdam
+                My Market List - Made with ❤ in Amsterdam
             </p>
             <a href="https://github.com/re2005/list-app"
                title="GitHub"
                target="_blank">
                 <img src="@/assets/icons/icon-github.svg" alt="GitHub" />
             </a>
-            <a href="whatsapp://send?text=Check this cool app https%3A%2F%2Fmy-market-list.firebaseapp.com%2F"
+            <a href="whatsapp://send?text=Let's make a list together. Create an account and share password to update our list :) https%3A%2F%2Fmy-market-list.firebaseapp.com%2F"
                data-action="share/whatsapp/share">
-                <img src="@/assets/icons/icon-whatsapp.svg" alt="Share via Whatsapp"  class="whatsapp"/>
+                <img src="@/assets/icons/icon-whatsapp.svg" alt="Share via Whatsapp" class="whatsapp" />
             </a>
-
         </footer>
+
     </section>
 </template>
 
@@ -286,6 +286,7 @@
             .item {
                 max-width: 80%;
                 text-align: left;
+                word-break: break-word;
             }
 
             .delete {
@@ -319,12 +320,13 @@
         }
 
         img {
-            width: 20px;
+            width: 24px;
             margin: 20px 5px;
         }
 
         .whatsapp {
             fill: #42b983;
+            color: red;
         }
     }
 </style>
