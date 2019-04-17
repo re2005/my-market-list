@@ -1,0 +1,13 @@
+<svg width="542px" height="281px" viewBox="0 0 542 281" version="1.1" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <linearGradient x1="2.35879663%" y1="50%" x2="97.7131216%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#79CA08" offset="0%"></stop>
+            <stop stop-color="#12D8A5" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Welcome" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Rectangle" fill="url(#linearGradient-1)"
+                 points="0 0 542 1.96723838e-15 542 263.729236 273.447998 281 0 263.729236"></polygon>
+    </g>
+</svg>
