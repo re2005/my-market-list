@@ -47,7 +47,9 @@
             logOut() {
                 this.isLoading = true;
                 firebase.auth().signOut().then(() => {
-                    this.isLoading = false;
+                    setTimeout(() => {
+                        this.isLoading = false;
+                    }, 1500);
                 });
             }
         }

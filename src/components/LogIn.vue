@@ -59,7 +59,7 @@
                 this.$emit('close');
             },
             replace(message) {
-                return message.replace(/email|address|user/g, 'list name');
+                return message.replace(/email address|user/g, 'list name');
             },
             login: function (ev) {
                 ev.preventDefault();
@@ -67,6 +67,13 @@
                 firebase.auth().signInWithEmailAndPassword(this.email + '@gmail.com', this.password).then(
                     (user) => {
                         this.$emit('close');
+
+                        window.ga('send', {
+                            hitType: 'event',
+                            eventCategory: 'Action',
+                            eventAction: 'UserLogged',
+                            eventLabel: this.email
+                        });
                     },
                     (err) => {
                         this.isLoading = false;
