@@ -1,5 +1,9 @@
 # list-app
 
+## DEMO
+
+https://my-market-list.firebaseapp.com/
+
 ## Project setup
 ```
 npm install
