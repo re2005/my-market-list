@@ -135,9 +135,23 @@
                 this.item = '';
                 firebaseApp.database().ref(this.getUser.uid).child('list').push(newItem);
                 firebaseApp.database().ref(this.getUser.uid).child('list_suggest').child(newItem).set({value: newItem});
+
+                window.ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'Navigation',
+                    eventAction: 'AddItem',
+                    eventLabel: this.item
+                });
             },
             removeItem(value) {
                 firebaseApp.database().ref(this.getUser.uid).child('list').child(value).remove();
+
+                window.ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'Navigation',
+                    eventAction: 'RemoveItem',
+                    eventLabel: this.item
+                });
             }
         }
     };

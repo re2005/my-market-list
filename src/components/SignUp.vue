@@ -69,6 +69,13 @@
                     (user) => {
                         this.$router.push({name: 'home'});
                         this.$emit('close');
+
+                        window.ga('send', {
+                            hitType: 'event',
+                            eventCategory: 'Action',
+                            eventAction: 'UserCreated',
+                            eventLabel: this.email
+                        });
                     },
                     (err) => {
                         this.isLoading = false;
