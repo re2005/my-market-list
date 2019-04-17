@@ -59,7 +59,7 @@
                 this.$emit('close');
             },
             replace(message) {
-                return message.replace(/email|address|user/g, 'list name');
+                return message.replace(/email address|user/g, 'list name');
             },
             signUp: function (ev) {
                 ev.preventDefault();
