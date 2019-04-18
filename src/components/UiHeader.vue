@@ -13,6 +13,11 @@
                 <img src="../assets/icons/icon-login.svg">{{config.user.email}}
             </div>
 
+            <span @click="openShare"
+                  class="share">
+                <img src="../assets/icons/icon-share.svg">
+            </span>
+
             <button @click="logOut" class="button warn">
                 <span v-if="!isLoading"
                       class="name">
@@ -51,6 +56,9 @@
                         this.isLoading = false;
                     }, 1500);
                 });
+            },
+            openShare() {
+                this.$emit('open', 'share');
             }
         }
     };
@@ -129,6 +137,15 @@
     .button {
         min-width: 100px;
         font-size: .8rem;
+    }
+
+    .share {
+        margin-top: 4px;
+        cursor: pointer;
+
+        img {
+            width: 26px;
+        }
     }
 
 </style>

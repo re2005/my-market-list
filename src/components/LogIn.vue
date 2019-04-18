@@ -61,7 +61,7 @@
             replace(message) {
                 return message.replace(/email address|user/g, 'list name');
             },
-            login: function (ev) {
+            login(ev) {
                 ev.preventDefault();
                 this.isLoading = true;
                 firebase.auth().signInWithEmailAndPassword(this.email + '@gmail.com', this.password).then(
