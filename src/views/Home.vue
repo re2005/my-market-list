@@ -10,7 +10,13 @@
                 v-if="isVisible('logIn')"
                 @close="close" />
 
-        <ui-header :config="{user: getUser, guest:isGuest}" />
+        <share-list class="share"
+                    :user="getUser"
+                    v-if="isVisible('share')"
+                    @close="close" />
+
+        <ui-header :config="{user: getUser, guest:isGuest}"
+                   @open="open" />
 
         <div v-if="isGuest"
              class="guest-label">
@@ -90,10 +96,13 @@
 <script>
     import {mapActions, mapGetters} from 'vuex';
     import firebaseApp from 'firebase/app';
+    import 'firebase/auth';
     import 'firebase/database';
     import UiHeader from '@/components/UiHeader';
     import SignUp from '@/components/SignUp';
     import LogIn from '@/components/LogIn';
+    import ShareList from '@/components/ShareList';
+    import SimpleCrypto from 'simple-crypto-js';
 
     export default {
         name: 'home',
@@ -107,7 +116,8 @@
         components: {
             UiHeader,
             SignUp,
-            LogIn
+            LogIn,
+            ShareList
         },
         computed: {
             ...mapGetters([
@@ -155,7 +165,7 @@
                     hitType: 'event',
                     eventCategory: 'Navigation',
                     eventAction: 'AddItem',
-                    eventLabel: this.item
+                    eventLabel: newItem
                 });
             },
             removeItem(value) {
@@ -167,7 +177,24 @@
                     eventAction: 'RemoveItem',
                     eventLabel: this.item
                 });
+            },
+            login(user) {
+                firebaseApp.auth().signInWithEmailAndPassword(user[0] + '@gmail.com', user[1]).then(
+                    (user) => {
+                        console.assert(user);
+                    },
+                    (err) => {
+                        // TODO Handle error when login from parameter
+                    }
+                );
             }
+        },
+        created() {
+            let re = this.$route.query.key;
+            if (!re) return;
+            const _secretKey = 'some-unique-key';
+            const simpleCrypto1 = new SimpleCrypto(_secretKey);
+            this.login(simpleCrypto1.decrypt(re).split(';'));
         }
     };
 </script>

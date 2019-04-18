@@ -61,7 +61,7 @@
             replace(message) {
                 return message.replace(/email address|user/g, 'list name');
             },
-            signUp: function (ev) {
+            signUp(ev) {
                 ev.preventDefault();
                 this.isLoading = true;
                 let email = this.email + '@gmail.com';
