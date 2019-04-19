@@ -10,7 +10,7 @@ Vue.config.productionTip = false;
 let app = '';
 
 firebase.auth().onAuthStateChanged(data => {
-    if (!firebase.auth().currentUser) {
+    if (!firebase.auth().currentUser && window.location.search.indexOf('key') === -1) {
         firebase.auth().signInWithEmailAndPassword('guest@gmail.com', '!@#$%^&*').then(
             (user) => {
                 console.log(user);

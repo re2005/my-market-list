@@ -181,7 +181,7 @@
             login(user) {
                 firebaseApp.auth().signInWithEmailAndPassword(user[0] + '@gmail.com', user[1]).then(
                     (user) => {
-                        console.assert(user);
+                        console.log(user);
                     },
                     (err) => {
                         // TODO Handle error when login from parameter
@@ -189,12 +189,12 @@
                 );
             }
         },
-        created() {
-            let re = this.$route.query.key;
-            if (!re) return;
+        mounted() {
+            let key = this.$route.query.key;
+            if (!key) return;
             const _secretKey = 'some-unique-key';
             const simpleCrypto1 = new SimpleCrypto(_secretKey);
-            this.login(simpleCrypto1.decrypt(re).split(';'));
+            this.login(simpleCrypto1.decrypt(key).split(';'));
         }
     };
 </script>
