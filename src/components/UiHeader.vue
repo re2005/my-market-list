@@ -64,22 +64,22 @@
     };
 </script>
 
+
 <style scoped lang="scss">
 
     .logo-wrapper {
         background: url("../assets/images/background-main.svg") no-repeat bottom;
         background-size: 101%;
         background-color: #FFF7B4;
+        position: relative;
 
         .user & {
             background-color: transparent;
-        }
-
-        .user & {
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px 0;
+            z-index: 10;
         }
     }
 
@@ -112,17 +112,7 @@
         justify-content: space-between;
         color: white;
         position: relative;
-
-        &:before {
-            content: '';
-            background-image: linear-gradient(-270deg, #200E37 0%, #390832 100%);
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            top: 0;
-            z-index: -1;
-        }
+        background-image: linear-gradient(-270deg, #200E37 0%, #390832 100%);
 
         .name {
             display: flex;

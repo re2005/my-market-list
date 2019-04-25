@@ -207,6 +207,9 @@
 
         &.open {
             transform: translateY(200px);
+            background: white;
+            min-height: 100%;
+            height: 100%;
         }
     }
 
