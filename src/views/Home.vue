@@ -175,7 +175,7 @@
                     hitType: 'event',
                     eventCategory: 'Navigation',
                     eventAction: 'RemoveItem',
-                    eventLabel: this.item
+                    eventLabel: value
                 });
             },
             login(user) {
@@ -184,6 +184,7 @@
                         console.log(user);
                     },
                     (err) => {
+                        console.log('Error login', err);
                         // TODO Handle error when login from parameter
                     }
                 );
