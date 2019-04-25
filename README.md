@@ -2,10 +2,6 @@
 
 ## DEMO
 
-https://re2005.github.io/my-market-list/
-
-or 
-
 https://my-market-list.firebaseapp.com/
 
 ## Project setup
