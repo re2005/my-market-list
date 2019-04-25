@@ -15,6 +15,7 @@
                 <label v-if="!shortUrl">
                     Please confirm your password
                     <input type='password'
+                           ref="password"
                            v-model='password'
                            placeholder='password'
                            autocomplete='password'>
@@ -85,6 +86,14 @@
             user: {
                 type: Object,
                 required: true
+            }
+        },
+
+        mounted() {
+            if (this.$refs.password) {
+                this.$nextTick(() => {
+                    this.$refs.password.focus();
+                });
             }
         },
         computed: {

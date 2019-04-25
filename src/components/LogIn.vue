@@ -9,6 +9,7 @@
         <form @submit="login"
               autocomplete="on">
             <input type="text"
+                   ref="email"
                    v-model="email"
                    placeholder="list-name"
                    autocomplete="username">
@@ -53,6 +54,13 @@
                 error: undefined,
                 isLoading: false
             };
+        },
+        mounted() {
+            if (this.$refs.email) {
+                this.$nextTick(() => {
+                    this.$refs.email.focus();
+                });
+            }
         },
         methods: {
             close() {
