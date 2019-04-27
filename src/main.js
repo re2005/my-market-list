@@ -4,6 +4,9 @@ import router from './router';
 import store from './store';
 import firebase from 'firebase/app';
 import config from './config';
+import FastClick from 'vue-fastclick';
+
+FastClick.attach(document.body);
 
 firebase.initializeApp(config);
 Vue.config.productionTip = false;
