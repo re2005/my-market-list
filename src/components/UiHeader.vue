@@ -1,8 +1,7 @@
 <template>
     <header>
         <div class="logo-wrapper">
-            <img src="../assets/images/my-market-list-logo.svg"
-                 class="logo">
+            <div class="logo" />
             <h1>
                 My Market List
             </h1>
@@ -10,12 +9,15 @@
         <div v-if="!config.guest"
              class="user">
             <div class="name">
-                <img src="../assets/icons/icon-login.svg">{{config.user.email}}
+                <Icon name="login"
+                      size="md" />
+                {{config.user.email}}
             </div>
 
             <span @click="openShare"
                   class="share">
-                <img src="../assets/icons/icon-share.svg">
+                <Icon name="share"
+                      size="xl" />
             </span>
 
             <button @click="logOut" class="button warn">
@@ -24,9 +26,10 @@
                     <span>Logout</span>
                 </span>
 
-                <img src="@/assets/icons/icon-loading.svg"
-                     v-if="isLoading"
-                     class="loading" />
+                <Icon name="loading"
+                      size="sm"
+                      v-if="isLoading"
+                      class="loading" />
             </button>
         </div>
     </header>
@@ -34,6 +37,7 @@
 
 <script>
     import firebase from 'firebase/app';
+    import Icon from '../components/Icon';
 
     export default {
         name: 'UiHeader',
@@ -60,10 +64,12 @@
             openShare() {
                 this.$emit('open', 'share');
             }
+        },
+        components: {
+            Icon
         }
     };
 </script>
-
 
 <style scoped lang="scss">
 
@@ -72,6 +78,7 @@
         background-size: 101%;
         background-color: #FFF7B4;
         position: relative;
+        padding-top: 10px;
 
         .user & {
             background-color: transparent;
@@ -84,12 +91,18 @@
     }
 
     .logo {
-        border: 2px solid #68C20C;
+        background: url("../assets/images/my-market-list-logo.svg") no-repeat center;
+        background-size: 100%;
         box-shadow: 0 11px 80px 0 #5DB502;
         border-radius: 100%;
+        height: 90px;
+        width: 90px;
+        margin: auto;
 
         .user & {
             width: 40px;
+            height: 40px;
+            margin: inherit;
             margin-right: 10px;
         }
     }
@@ -118,8 +131,8 @@
             display: flex;
             align-items: center;
 
-            img {
-                margin-right: 10px;
+            i {
+                margin-right: 4px;
             }
         }
     }
