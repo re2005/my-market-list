@@ -331,7 +331,6 @@
             }
 
             .delete {
-
                 background: #FF0C38;
                 border-radius: 8px;
                 margin: 10px;
@@ -343,10 +342,6 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-
-                &:hover {
-                    opacity: .5;
-                }
             }
         }
     }
