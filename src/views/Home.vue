@@ -68,7 +68,10 @@
                     <span class="item">{{ message }}</span>
                     <span @click="removeItem(key)"
                           class="delete">
-                        <img src="@/assets/icons/icon-close.svg" />
+
+                        <Icon name="close"
+                              size="xs" />
+
                     </span>
                 </li>
             </ul>
@@ -82,11 +85,15 @@
             <a href="https://github.com/re2005/list-app"
                title="GitHub"
                target="_blank">
-                <img src="@/assets/icons/icon-github.svg" alt="GitHub" />
+
+                <Icon name="github"
+                      size="lg" />
             </a>
             <a href="whatsapp://send?text=Let's make a list together. Create an account and share password to update our list :) https%3A%2F%2Fmy-market-list.firebaseapp.com%2F"
                data-action="share/whatsapp/share">
-                <img src="@/assets/icons/icon-whatsapp.svg" alt="Share via Whatsapp" class="whatsapp" />
+
+                <Icon name="whatsapp"
+                      size="lg" />
             </a>
         </footer>
 
@@ -103,6 +110,8 @@
     import LogIn from '@/components/LogIn';
     import ShareList from '@/components/ShareList';
     import SimpleCrypto from 'simple-crypto-js';
+    import Icon from '@/components/Icon';
+
 
     export default {
         name: 'home',
@@ -117,7 +126,8 @@
             UiHeader,
             SignUp,
             LogIn,
-            ShareList
+            ShareList,
+            Icon
         },
         computed: {
             ...mapGetters([
@@ -350,14 +360,9 @@
             font-size: .9rem;
         }
 
-        img {
+        i {
             width: 24px;
             margin: 20px 5px;
-        }
-
-        .whatsapp {
-            fill: #42b983;
-            color: red;
         }
     }
 </style>

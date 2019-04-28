@@ -3,7 +3,7 @@
 
         <span @click="close"
               class="close">
-            <img src="@/assets/icons/icon-close.svg" />
+            <icon name="close" size="xl" />
         </span>
 
         <form @submit="signUp"
@@ -27,14 +27,16 @@
                     class="button primary">
                 <span v-if="!isLoading"
                       class="name">
-                    <img src="@/assets/icons/icon-signup.svg"
-                         class="icon" />
+                        <Icon name="signup"
+                              size="sm"
+                              class="icon" />
                     <span>Create</span>
                 </span>
 
-                <img src="@/assets/icons/icon-loading.svg"
-                     v-if="isLoading"
-                     class="loading" />
+                <Icon name="loading"
+                      size="sm"
+                      v-if="isLoading"
+                      class="loading" />
             </button>
         </form>
 
@@ -44,6 +46,7 @@
 <script>
     import firebase from 'firebase/app';
     import 'firebase/auth';
+    import Icon from '@/components/Icon';
 
     export default {
         name: 'SignUp',
@@ -54,6 +57,9 @@
                 error: undefined,
                 isLoading: false
             };
+        },
+        components: {
+            Icon
         },
         mounted() {
             if (this.$refs.email) {
