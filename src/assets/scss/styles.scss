@@ -103,6 +103,12 @@ input {
     width: 20px;
     height: 20px;
     position: absolute;
+    cursor: pointer;
+    transition: transform .2s ease;
+
+    &:hover {
+        transform: rotate(90deg);
+    }
 
     img {
         width: 100%;

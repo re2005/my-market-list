@@ -1,9 +1,9 @@
 <template>
     <div class='component second'>
 
-        <span @click='close'
-              class='close'>
-            <img src='@/assets/icons/icon-close.svg' />
+        <span @click="close"
+              class="close">
+            <icon name="close" size="xl" />
         </span>
 
         <form @submit='share'
@@ -25,22 +25,24 @@
             <div v-if='shortUrl'
                  class="short-url">
                 <p>
-                    This link grant access to your list
+                    Use link bellow to access your list
                 </p>
                 <p class="url">{{shortUrl}}</p>
 
                 <div class="actions">
                     <span @click="copyText">
-                        <img src="@/assets/icons/icon-copy.svg"
-                             alt="Copy"
-                             class="whatsapp" />
+                        <Icon name="copy"
+                              size="md"
+                              class="whatsapp" />
                     </span>
 
                     <a :href="getWhatsappUrl()"
                        data-action="share/whatsapp/share">
-                        <img src="@/assets/icons/icon-whatsapp-white.svg"
-                             alt="Share via Whatsapp"
-                             class="whatsapp" />
+
+                        <Icon name="whatsapp"
+                              size="md"
+                              class="whatsapp" />
+
                     </a>
                 </div>
             </div>
@@ -52,15 +54,18 @@
 
                 <span v-if="!isLoading"
                       class="name">
-                    <img src="@/assets/icons/icon-link.svg"
-                         alt='Generate link'
-                         class="icon" />
+
+                    <Icon name="link"
+                          size="sm"
+                          class="icon" />
+
                     <span>Generate link</span>
                 </span>
 
-                <img src="@/assets/icons/icon-loading.svg"
-                     v-if="isLoading"
-                     class="loading" />
+                <Icon name="loading"
+                      size="sm"
+                      v-if="isLoading"
+                      class="loading" />
 
             </button>
         </form>
@@ -70,6 +75,7 @@
 <script>
     import SimpleCrypto from 'simple-crypto-js';
     import config from '../config';
+    import Icon from '@/components/Icon';
 
     export default {
         name: 'LogIn',
@@ -103,6 +109,9 @@
                 const plainText = this.user.email + ';' + this.password;
                 return this.makeUrl(simpleCrypto1.encrypt(plainText));
             }
+        },
+        components: {
+            Icon
         },
         methods: {
             copyText() {
@@ -182,10 +191,14 @@
             align-content: center;
             justify-content: center;
 
-            img {
+            i {
                 cursor: pointer;
                 width: 24px;
                 margin: 20px 10px 0;
+            }
+
+            .whatsapp {
+                fill: white;
             }
         }
     }
