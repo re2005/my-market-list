@@ -63,10 +63,10 @@
             </div>
 
             <ul v-else class="list">
-                <li v-for="(message, key) in getList"
+                <li v-for="(item, key) in getList"
                     :key="key">
-                    <span class="item">{{ message }}</span>
-                    <span @click="removeItem(key)"
+                    <span class="item">{{ item }}</span>
+                    <span @click="removeItem(key, item)"
                           class="delete">
 
                         <Icon name="close"
@@ -178,14 +178,14 @@
                     eventLabel: newItem
                 });
             },
-            removeItem(value) {
-                firebaseApp.database().ref(this.getUser.uid).child('list').child(value).remove();
+            removeItem(key, name) {
+                firebaseApp.database().ref(this.getUser.uid).child('list').child(key).remove();
 
                 window.ga('send', {
                     hitType: 'event',
                     eventCategory: 'Navigation',
                     eventAction: 'RemoveItem',
-                    eventLabel: value
+                    eventLabel: name
                 });
             },
             login(user) {
