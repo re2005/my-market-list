@@ -37,22 +37,19 @@
             <input v-model="item"
                    placeholder="Strawberries"
                    class="item"
-                   @keyup.enter="addItem()" />
-            <button @click="addItem()"
+                   @keyup.enter="addItem(item)" />
+            <button @click="addItem(item)"
                     :disabled="!item">
                 add
             </button>
         </div>
 
-        <ul class="suggest-list"
-            v-if="suggests.length !== 0">
-            <li
-                v-for="(suggest, index) in suggests"
-                :key="index"
-                @click="item = suggest;addItem()">
-                {{ suggest }}
-            </li>
-        </ul>
+        <suggest-list
+            :suggests-list="getSuggestList"
+            @addItem="addItem"
+            :item="item"
+            :user="getUser"
+        />
 
         <div v-if="isLoading">
             loading
@@ -111,7 +108,7 @@
     import ShareList from '@/components/ShareList';
     import SimpleCrypto from 'simple-crypto-js';
     import Icon from '@/components/Icon';
-
+    import SuggestList from '@/components/SuggestList';
 
     export default {
         name: 'home',
@@ -127,7 +124,8 @@
             SignUp,
             LogIn,
             ShareList,
-            Icon
+            Icon,
+            SuggestList
         },
         computed: {
             ...mapGetters([
@@ -136,16 +134,7 @@
                 'getSuggestList',
                 'isLoading',
                 'isGuest'
-            ]),
-            suggests() {
-                if (!this.item || this.item.length < 2) return [];
-                let suggest = [];
-                const query = this.item.toLowerCase();
-                for (let item in this.getSuggestList) {
-                    if (this.getSuggestList.hasOwnProperty(item) && item.toLowerCase().indexOf(query) !== -1) suggest.push(item);
-                }
-                return suggest;
-            }
+            ])
         },
         methods: {
             isVisible(what) {
@@ -164,12 +153,28 @@
                 });
             },
             ...mapActions(['getListFromApi']),
-            addItem() {
-                if (!this.item) return;
-                const newItem = this.item;
+            getTotal(suggest) {
+                let current;
+                if (!this.getSuggestList[suggest] || !this.getSuggestList[suggest].amount) {
+                    current = 1;
+                } else {
+                    current = this.getSuggestList[suggest].amount + 1;
+                }
+                return current;
+            },
+            addItem(item) {
+                const newItem = item;
                 this.item = '';
                 firebaseApp.database().ref(this.getUser.uid).child('list').push(newItem);
-                firebaseApp.database().ref(this.getUser.uid).child('list_suggest').child(newItem).set({value: newItem});
+
+                let total = this.getTotal(newItem);
+                firebaseApp.database().ref(this.getUser.uid).child('list_suggest').child(newItem)
+                    .set(
+                        {
+                            value: newItem,
+                            amount: total
+                        }
+                    );
 
                 window.ga('send', {
                     hitType: 'event',
