@@ -2,7 +2,7 @@
 
 ## DEMO
 
-https://my-market-list.firebaseapp.com/
+https://my-market-list.web.app/
 
 ## Project setup
 ```
