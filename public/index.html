@@ -31,10 +31,10 @@
     <strong>We're sorry but list-app doesn't work properly without JavaScript enabled. Please enable it to
         continue.</strong>
 </noscript>
+<div id="deviceProperties"></div>
 <div id="app"></div>
 <!-- built files will be auto injected -->
 
-<!-- Google Analytics -->
 <script>
     (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
@@ -49,9 +49,12 @@
     })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
     ga('create', 'UA-138532437-1', 'auto');
+    ga('set', 'checkProtocolTask', null);
     ga('send', 'pageview');
 </script>
-<!-- End Google Analytics -->
+<script>
+    window.isAPP = document.URL.indexOf('file:///') > -1;
+</script>
 
 </body>
 </html>

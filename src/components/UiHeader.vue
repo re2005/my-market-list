@@ -6,32 +6,37 @@
                 My Market List
             </h1>
         </div>
-        <div v-if="!config.guest"
-             class="user">
-            <div class="name">
-                <Icon name="login"
-                      size="md" />
-                {{config.user.email}}
-            </div>
 
-            <span @click="openShare"
-                  class="share">
+        <div v-if="!$isAPP">
+            <div v-if="!config.guest"
+                 class="user">
+                <div class="name">
+                    <Icon name="login"
+                          size="md" />
+                    {{config.user.email}}
+                </div>
+
+                <span
+                    @click="openShare"
+                    class="share">
                 <Icon name="share"
                       size="xl" />
-            </span>
+                </span>
 
-            <button @click="logOut" class="button warn">
+                <button @click="logOut" class="button warn">
                 <span v-if="!isLoading"
                       class="name">
                     <span>Logout</span>
                 </span>
 
-                <Icon name="loading"
-                      size="sm"
-                      v-if="isLoading"
-                      class="loading" />
-            </button>
+                    <Icon name="loading"
+                          size="sm"
+                          v-if="isLoading"
+                          class="loading" />
+                </button>
+            </div>
         </div>
+        <div v-else class="user" />
     </header>
 </template>
 
@@ -64,6 +69,14 @@
             openShare() {
                 this.$emit('open', 'share');
             }
+            // change() {
+            //     firebase.auth()
+            //         .signInWithEmailAndPassword('rerere@gmail.com', 'UnchangedPassw0rd!!@#$%^&*()')
+            //         .then(function (userCredential) {
+            //             debugger;
+            //             userCredential.user.updateEmail('newyou@domain.com');
+            //         });
+            // }
         },
         components: {
             Icon

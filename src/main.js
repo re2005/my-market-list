@@ -11,9 +11,10 @@ FastClick.attach(document.body);
 firebase.initializeApp(config);
 Vue.config.productionTip = false;
 let app = '';
+Vue.prototype.$isAPP = window.isAPP;
 
 firebase.auth().onAuthStateChanged(data => {
-    if (!firebase.auth().currentUser && window.location.search.indexOf('key') === -1) {
+    if (!firebase.auth().currentUser && window.location.search.indexOf('key') === -1 && !window.isAPP) {
         firebase.auth().signInWithEmailAndPassword('guest@gmail.com', '!@#$%^&*').then(
             (user) => {
                 console.log(user);
@@ -22,6 +23,22 @@ firebase.auth().onAuthStateChanged(data => {
                 alert('Oops. ' + err.message);
             }
         );
+    }
+
+    if (!firebase.auth().currentUser && window.isAPP) {
+        const config = {
+            user: Date.now() + '@gmail.com',
+            password: 'UnchangedPassw0rd!!@#$%^&*()'
+        };
+        firebase.auth().createUserWithEmailAndPassword(config.user, config.password).then(
+            (user) => {
+                window.ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'Action',
+                    eventAction: 'UserCreated',
+                    eventLabel: user.email
+                });
+            });
     }
 
     store.dispatch('updateUser', data);

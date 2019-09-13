@@ -1,4 +1,4 @@
 module.exports = {
     publicPath: './',
-    outputDir: '../list-app-android/www/'
+    // outputDir: '../my-market-list-android/www/'
 };
