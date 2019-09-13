@@ -56,7 +56,7 @@
         </div>
         <div v-else>
             <div v-if="getList.length === 0">
-                Empty list :(
+                Your list is empty :)
             </div>
 
             <ul v-else class="list">
@@ -79,19 +79,21 @@
             <p>
                 My Market List - Made with ❤ in Amsterdam
             </p>
-            <a href="https://github.com/re2005/list-app"
-               title="GitHub"
-               target="_blank">
+            <div v-if="!$isAPP">
+                <a href="https://github.com/re2005/list-app"
+                   title="GitHub"
+                   target="_blank">
 
-                <Icon name="github"
-                      size="lg" />
-            </a>
-            <a href="whatsapp://send?text=Let's make a list together. Create an account and share password to update our list :) https%3A%2F%2Fmy-market-list.firebaseapp.com%2F"
-               data-action="share/whatsapp/share">
+                    <Icon name="github"
+                          size="lg" />
+                </a>
+                <a href="whatsapp://send?text=Let's make a list together. Create an account and share password to update our list :) https%3A%2F%2Fmy-market-list.firebaseapp.com%2F"
+                   data-action="share/whatsapp/share">
 
-                <Icon name="whatsapp"
-                      size="lg" />
-            </a>
+                    <Icon name="whatsapp"
+                          size="lg" />
+                </a>
+            </div>
         </footer>
 
     </section>
