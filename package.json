@@ -10,7 +10,7 @@
     "dependencies": {
         "core-js": "^2.6.5",
         "firebase": "^5.9.3",
-        "simple-crypto-js": "^2.0.2",
+        "simple-crypto-js": "^2.3.0",
         "svg-inline-loader": "^0.8.0",
         "vue": "^2.6.6",
         "vue-fastclick": "^1.0.3",
