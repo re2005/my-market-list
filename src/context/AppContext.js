@@ -20,12 +20,28 @@ export const AuthContextProvider = ({children}) => {
   const [list, setList] = useState(null);
   const [listSuggest, setListSuggest] = useState(null);
 
+  function getTotal(suggest) {
+    let current;
+    if (!listSuggest[suggest] || !listSuggest[suggest].amount) {
+      current = 1;
+    } else {
+      current = listSuggest[suggest].amount + 1;
+    }
+    return current;
+  }
+
   async function addItem(item) {
     const docRef = getData(user.uid);
     try {
       const list = child(docRef, 'list');
       const newItem = push(list);
       await set(newItem, item);
+
+      const listSuggestion = child(docRef, 'list_suggest'+ '/' + item);
+      await set(listSuggestion, {
+        value: item,
+        amount: getTotal(item)
+      });
     } catch (error) {
       console.log(error);
     } finally {

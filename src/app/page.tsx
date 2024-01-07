@@ -5,15 +5,24 @@ import UiItemInput from "@/components/UiItemInput";
 import {useAuthContext} from "@/context/AppContext";
 import UiSignIn from "@/components/UiSignIn";
 import {signOutUser} from "@/firebase/auth";
+import Image from "next/image";
 
 export default function Home() {
   const {user, loading}: any = useAuthContext();
 
   return (
-    <section className={`flex justify-center mt-10 lg:mt-14 gap-4 lg:gap-10 transition ${loading ? 'opacity-0':'opacity-100'}`}>
-      {user ? <div className='flex flex-col gap-10 relative w-full px-5 items-center'>
-      <UiItemInput/>
+    <>
+      {loading && <div className='absolute w-full flex top-40'>
+        <Image src='/loading.svg' alt='loading' width={90} height={90} className='mx-auto'/>
+      </div>
+      }
+      <section
+        className={`flex justify-center mt-10 lg:mt-14 gap-4 lg:gap-10 transition ${loading ? 'opacity-0' : 'opacity-100'}`}>
+        {user ? <div className='flex flex-col gap-10 w-full px-5 items-center'>
+
+          <UiItemInput/>
         <UiList/>
+
         <div className='flex gap-3 items-center justify-center'>
           <p>
             {user.email.replace(/@.*/, '')}
@@ -23,5 +32,6 @@ export default function Home() {
         </div>
       </div> : <UiSignIn/>}
     </section>
+    </>
   )
 }

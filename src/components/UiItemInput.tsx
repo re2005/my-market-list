@@ -19,7 +19,8 @@ export default function UiItemInput() {
   }
 
   return (
-    <div className={`w-full ${loading ? 'pointer-events-none' : ''}`}>
+    <div className={`w-full relative ${loading ? 'pointer-events-none' : ''}`}>
+
       <form onSubmit={handleSubmit} className="flex gap-3 justify-center">
           <input
             value={inputValue}
@@ -36,6 +37,7 @@ export default function UiItemInput() {
           Add
         </button>
       </form>
+
       <SuggestList
         suggestsList={listSuggest}
         item={inputValue}

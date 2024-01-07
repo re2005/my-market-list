@@ -6,7 +6,7 @@ import React from "react";
 export default function UiList() {
   const {loadingList, list, removeItem}: any = useAuthContext()
   return (
-    <div className="w-full md:w-[400px]">
+    <div className="w-full md:w-[420px]">
       {loadingList && <p className='text-center'>Loading...</p>
       }
       <div className="">
