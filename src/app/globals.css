@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --green-1: #79CA08;
+    --green-2: #12D8A5;
+    --gray: #4A4A4A;
+}
+
+html * {
+    font-family: 'Dosis', sans-serif;
+}
+
+body {
+    color: var(--gray);
+    background: white;
+}
+
+.green-gradient-bg {
+    background: linear-gradient(to left, var(--green-1), var(--green-2));
+}
