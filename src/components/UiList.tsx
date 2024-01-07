@@ -2,12 +2,13 @@
 
 import {useAuthContext} from "@/context/AppContext";
 import React from "react";
+import Image from "next/image";
 
 export default function UiList() {
   const {loadingList, list, removeItem}: any = useAuthContext()
   return (
     <div className="w-full md:w-[420px]">
-      {loadingList && <p className='text-center'>Loading...</p>
+      {loadingList && <Image src='/loading.svg' alt='loading' width={90} height={90} className='mx-auto'/>
       }
       <div className="">
         <ul className='grid gap-3'>
