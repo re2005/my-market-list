@@ -19,8 +19,7 @@ export default function Home() {
       <section
         className={`flex justify-center mt-10 lg:mt-14 gap-4 lg:gap-10 transition ${loading ? 'opacity-0' : 'opacity-100'}`}>
         {user ? <div className='flex flex-col gap-10 w-full px-5 items-center'>
-
-          <UiItemInput/>
+        <UiItemInput/>
         <UiList/>
 
         <div className='flex gap-3 items-center justify-center'>

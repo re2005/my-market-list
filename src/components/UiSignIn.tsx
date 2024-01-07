@@ -25,7 +25,7 @@ export default function Page() {
       <form onSubmit={handleForm} className='flex flex-col gap-4 mt-6'>
         <div className='flex flex-col gap-3'>
           <label htmlFor="user" className='flex gap-3 items-center'>
-            <p>list name:</p>
+            <p>List name:</p>
             <input onChange={(e) => setEmail(e.target.value)} required name="user" id="user"
                    placeholder="mylist" className='text-black border p-3 rounded'/>
           </label>
