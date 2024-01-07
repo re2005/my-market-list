@@ -21,16 +21,14 @@ export default function UiItemInput() {
   return (
     <div className={`w-full ${loading ? 'pointer-events-none' : ''}`}>
       <form onSubmit={handleSubmit} className="flex gap-3 justify-center">
-        <label>
           <input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             required
             name="item"
             placeholder="Strawberries"
-            className="border rounded-2xl px-3 py-2 text-black shadow lg:w-72"
+            className="border rounded-2xl px-3 py-2 text-black shadow w-full md:w-72"
           />
-        </label>
         <button
           type="submit"
           className="green-gradient-bg text-white text-lg px-3 rounded-2xl border border-gray-200 shadow"

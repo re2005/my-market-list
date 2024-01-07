@@ -7,11 +7,11 @@ import UiSignIn from "@/components/UiSignIn";
 import {signOutUser} from "@/firebase/auth";
 
 export default function Home() {
-  const {user}: any = useAuthContext();
+  const {user, loading}: any = useAuthContext();
 
   return (
-    <section className="flex justify-center mt-10 lg:mt-20 gap-4 lg:gap-10">
-      {user ? <div className='flex flex-col gap-10'>
+    <section className={`flex justify-center mt-10 lg:mt-14 gap-4 lg:gap-10 transition ${loading ? 'opacity-0':'opacity-100'}`}>
+      {user ? <div className='flex flex-col gap-10 relative w-full px-5 items-center'>
       <UiItemInput/>
         <UiList/>
         <div className='flex gap-3 items-center justify-center'>

@@ -5,7 +5,7 @@ import {createContext, useContext, useEffect, useState} from 'react';
 import {getAuth, onAuthStateChanged} from 'firebase/auth';
 import firebase_app from '@/firebase/config';
 import getData from "@/firebase/getData";
-import {child, onValue, push, set, remove, ref} from "firebase/database";
+import {child, onValue, push, remove, set} from "firebase/database";
 
 const auth = getAuth(firebase_app);
 
@@ -16,6 +16,7 @@ export const useAuthContext = () => useContext(AppContext);
 export const AuthContextProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loadingList, setLoadingList] = useState(true);
   const [list, setList] = useState(null);
   const [listSuggest, setListSuggest] = useState(null);
 
@@ -53,20 +54,20 @@ export const AuthContextProvider = ({children}) => {
           const {list, list_suggest} = snapshot.val();
           setList(list);
           setListSuggest(list_suggest);
-          setLoading(false);
+          setLoadingList(false);
         });
 
       } else {
         setUser(null);
-        setLoading(false);
       }
+      setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
   return (
-    <AppContext.Provider value={{user, loading, list, listSuggest, addItem, removeItem}}>
+    <AppContext.Provider value={{user, loadingList, loading, list, listSuggest, addItem, removeItem}}>
       {children}
     </AppContext.Provider>
   );

@@ -4,12 +4,12 @@ import {useAuthContext} from "@/context/AppContext";
 import React from "react";
 
 export default function UiList() {
-  const {loading, list, removeItem}: any = useAuthContext()
+  const {loadingList, list, removeItem}: any = useAuthContext()
   return (
-    <div className="w-full md:w-[400px] px-5">
-      {loading && <p className='text-center'>Loading...</p>
+    <div className="w-full md:w-[400px]">
+      {loadingList && <p className='text-center'>Loading...</p>
       }
-      <div>
+      <div className="">
         <ul className='grid gap-3'>
           {list && Object.keys(list).reverse().map((item: any) => {
             return (
