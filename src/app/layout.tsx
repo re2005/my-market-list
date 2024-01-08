@@ -1,6 +1,6 @@
 import type {Metadata} from 'next'
 import {Inter} from 'next/font/google'
-import './globals.css'
+import '../assets/globals.css'
 import {AuthContextProvider} from '@/context/AppContext'
 import UiHeader from "@/components/UiHeader";
 import {ReactNode} from "react";

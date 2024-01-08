@@ -3,7 +3,7 @@
 import UiList from '@/components/UiList'
 import UiItemInput from "@/components/UiItemInput";
 import {useAuthContext} from "@/context/AppContext";
-import UiSignIn from "@/components/UiSignIn";
+import UiLogin from "@/components/UiLogin";
 import {signOutUser} from "@/firebase/auth";
 import Image from "next/image";
 
@@ -29,7 +29,7 @@ export default function Home() {
           <button onClick={() => signOutUser()} className='text-xs bg-red-400 rounded px-2 py-1 text-white font-bold'>Logout
           </button>
         </div>
-      </div> : <UiSignIn/>}
+      </div> : <UiLogin/>}
     </section>
     </>
   )

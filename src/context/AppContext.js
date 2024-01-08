@@ -49,10 +49,10 @@ export const AuthContextProvider = ({children}) => {
     }
   }
 
-  async function removeItem(item) {
+  async function removeItem(item, fromList) {
     const docRef = getData(user.uid);
     try {
-      const list = child(docRef, 'list' + '/' + item);
+      const list = child(docRef, fromList + '/' + item);
       await remove(list);
     } catch (error) {
       console.log(error);
