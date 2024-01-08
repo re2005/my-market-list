@@ -15,10 +15,12 @@ const SuggestList = ({suggestsList, item, onAddItem}: any) => {
 
     const query = item.toLowerCase();
 
-    const filteredSuggests = Object.keys(suggestsList)
-      .filter((suggestKey) => suggestKey.toLowerCase().indexOf(query) !== -1)
-      .sort((a, b) => suggestsList[b].amount - suggestsList[a].amount)
-      .map((suggestKey) => suggestsList[suggestKey].value);
+    const filteredSuggests = suggestsList
+      ? Object.keys(suggestsList)
+        .filter((suggestKey) => suggestsList[suggestKey] && suggestKey.toLowerCase().indexOf(query) !== -1)
+        .sort((a, b) => suggestsList[b].amount - suggestsList[a].amount)
+        .map((suggestKey) => suggestsList[suggestKey].value)
+      : [];
 
     setSuggests(filteredSuggests);
   }, [item, suggestsList]);

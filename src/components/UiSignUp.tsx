@@ -1,7 +1,7 @@
 'use client'
 
 import {useState} from "react";
-import {signIn} from "@/firebase/auth";
+import {signUp} from "@/firebase/auth";
 import IconLoading from '@/assets/loading-circle.svg'
 
 export default function Page() {
@@ -14,7 +14,7 @@ export default function Page() {
   const handleForm = async (event: any) => {
     event.preventDefault()
     setLoading(true)
-    const {error}: any = await signIn(email + '@gmail.com', password)
+    const {error}: any = await signUp(email, password)
     if (error) {
       setErrors(error.code.replace(/auth\//, '').replace(/-/g, ' '))
     }
@@ -24,19 +24,19 @@ export default function Page() {
   return (
     <div className="form-wrapper">
       <p>
-        Login to your account
+        Create your list
       </p>
       <form onSubmit={handleForm} className='flex flex-col gap-4 mt-6'>
         <div className='flex flex-col gap-3'>
-          <label htmlFor="user" className='flex gap-3 items-center'>
-            <p>List name:</p>
-            <input onChange={(e) => setEmail(e.target.value)} required name="user" id="user"
-                   placeholder="mylist" className='text-black border p-3 rounded'/>
+          <label htmlFor="email" className='flex gap-3 items-center'>
+            <p>Email</p>
+            <input onChange={(e) => setEmail(e.target.value)} required type='email' name="email" id="email"
+                   placeholder="myemail@gmail.com" className='text-black border p-3 rounded'/>
           </label>
-          <label htmlFor="password" className='flex gap-3 items-center'>
+          <label htmlFor="new-password" className='flex gap-3 items-center'>
             <p>Password</p>
             <input onChange={(e) => setPassword(e.target.value)} required type="password" name="password"
-                   id="password" placeholder="password" className='text-black border p-3 rounded'/>
+                   id="new-password" placeholder="password" className='text-black border p-3 rounded'/>
           </label>
         </div>
         <button type="submit" className='green-gradient-bg rounded p-2 text-white font-bold flex justify-center'>

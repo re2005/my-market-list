@@ -17,8 +17,8 @@ export const AuthContextProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadingList, setLoadingList] = useState(true);
-  const [list, setList] = useState(null);
-  const [listSuggest, setListSuggest] = useState(null);
+  const [list, setList] = useState({});
+  const [listSuggest, setListSuggest] = useState({});
 
   function getTotal(suggest) {
     let current;
@@ -67,9 +67,12 @@ export const AuthContextProvider = ({children}) => {
         setUser(user);
         const docRef = getData(user.uid);
         onValue(docRef, function (snapshot) {
-          const {list, list_suggest} = snapshot.val();
-          setList(list);
-          setListSuggest(list_suggest);
+          const data = snapshot.val();
+          if (data) {
+            const { list, list_suggest } = data;
+            setList(list);
+            setListSuggest(list_suggest);
+          }
           setLoadingList(false);
         });
 

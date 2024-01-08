@@ -4,6 +4,7 @@ import UiList from '@/components/UiList'
 import UiItemInput from "@/components/UiItemInput";
 import {useAuthContext} from "@/context/AppContext";
 import UiLogin from "@/components/UiLogin";
+import UiSignUp from "@/components/UiSignUp";
 import {signOutUser} from "@/firebase/auth";
 import Image from "next/image";
 
