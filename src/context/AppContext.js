@@ -49,6 +49,18 @@ export const AuthContextProvider = ({children}) => {
     }
   }
 
+  async function addFriend(item) {
+    const docRef = getData(user.uid + '/friends');
+    try {
+      const list = child(docRef, item);
+      await set(list, true);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      console.log('Friend added', item);
+    }
+  }
+
   async function removeItem(item, fromList) {
     const docRef = getData(user.uid);
     try {
@@ -65,11 +77,11 @@ export const AuthContextProvider = ({children}) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
-        const docRef = getData(user.uid);
+        const docRef = getData('AT6oiEGBLPNrRD8mZIOSnU687pG3');
         onValue(docRef, function (snapshot) {
           const data = snapshot.val();
           if (data) {
-            const { list, list_suggest } = data;
+            const { list, list_suggest, friends } = data;
             setList(list);
             setListSuggest(list_suggest);
           }
@@ -86,7 +98,7 @@ export const AuthContextProvider = ({children}) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{user, loadingList, loading, list, listSuggest, addItem, removeItem}}>
+    <AppContext.Provider value={{user, loadingList, loading, list, listSuggest, addItem, removeItem, addFriend}}>
       {children}
     </AppContext.Provider>
   );
