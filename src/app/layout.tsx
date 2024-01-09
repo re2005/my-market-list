@@ -8,8 +8,8 @@ import {ReactNode} from "react";
 const inter = Inter({subsets: ['latin']})
 
 export const metadata: Metadata = {
-  title: 'My Grocery List',
-  description: 'Simplest way manage your grocery list.',
+  title: 'My Market List',
+  description: 'Simplest way manage your market list.',
 }
 
 export default function RootLayout({children}: {

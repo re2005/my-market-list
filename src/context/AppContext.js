@@ -6,7 +6,6 @@ import {getAuth, onAuthStateChanged} from 'firebase/auth';
 import firebase_app from '@/firebase/config';
 import getData from "@/firebase/getData";
 import {child, onValue, push, remove, set} from "firebase/database";
-import {useSearchParams} from "next/navigation";
 
 const auth = getAuth(firebase_app);
 
@@ -20,6 +19,8 @@ export const AuthContextProvider = ({children}) => {
   const [loadingList, setLoadingList] = useState(true);
   const [list, setList] = useState({});
   const [listSuggest, setListSuggest] = useState({});
+  const [listFriends, setListFriends] = useState(null);
+  const [currentUid, setCurrentUid] = useState(null);
 
   function getTotal(suggest) {
     let current;
@@ -50,15 +51,15 @@ export const AuthContextProvider = ({children}) => {
     }
   }
 
-  async function addFriend(item) {
+  async function addFriend(uid, email) {
     const docRef = getData(user.uid + '/friends');
     try {
-      const list = child(docRef, item);
-      await set(list, true);
+      const list = child(docRef, uid);
+      await set(list, email);
     } catch (error) {
       console.log(error);
     } finally {
-      console.log('Friend added', item);
+      console.log('Friend added', uid);
     }
   }
 
@@ -75,20 +76,33 @@ export const AuthContextProvider = ({children}) => {
   }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    if (!currentUid) {
+      return;
+    }
+
+    const docRef = getData(currentUid);
+
+    // Unsubscribe from the previous listener
+    const previousListener = onValue(docRef, function (snapshot) {
+      const data = snapshot.val();
+      if (data) {
+        const { list, list_suggest, friends } = data;
+        setList(list);
+        setListSuggest(list_suggest);
+        setListFriends(friends);
+      }
+      setLoadingList(false);
+    });
+
+    // Clean up the listener when the component unmounts or currentUid changes
+    return () => previousListener();
+  }, [currentUid]);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUser(user);
-        const docRef = getData(user.uid);
-        onValue(docRef, function (snapshot) {
-          const data = snapshot.val();
-          if (data) {
-            const { list, list_suggest, friends } = data;
-            setList(list);
-            setListSuggest(list_suggest);
-          }
-          setLoadingList(false);
-        });
-
+        await setCurrentUid(user.uid);
       } else {
         setUser(null);
       }
@@ -99,7 +113,18 @@ export const AuthContextProvider = ({children}) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{user, loadingList, loading, list, listSuggest, addItem, removeItem, addFriend}}>
+    <AppContext.Provider value={{
+      user,
+      listFriends,
+      loadingList,
+      loading,
+      list,
+      listSuggest,
+      addItem,
+      removeItem,
+      addFriend,
+      setCurrentUid
+    }}>
       {children}
     </AppContext.Provider>
   );

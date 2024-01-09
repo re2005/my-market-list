@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAuthContext} from "@/context/AppContext";
+import {useRouter} from "next/navigation";
 
 interface FriendRequestProps {
   hasFriendQuery: string[];
@@ -7,12 +8,14 @@ interface FriendRequestProps {
 
 const FriendRequest: React.FC<FriendRequestProps> = ({ hasFriendQuery }) => {
   const {addFriend}: any = useAuthContext()
+  const router = useRouter();
 
   const [isAccepted, setIsAccepted] = useState(false);
 
   function addFriendHandler() {
-    addFriend(hasFriendQuery[0]);
+    addFriend(hasFriendQuery[0], hasFriendQuery[1]);
     setIsAccepted(true);
+    router.push('/');
   }
 
   return (
@@ -24,9 +27,16 @@ const FriendRequest: React.FC<FriendRequestProps> = ({ hasFriendQuery }) => {
             <br/><strong>{hasFriendQuery[1]}</strong><br/>
             to join this list
           </p>
-          <button onClick={() => addFriendHandler()} className='rounded p-2 font-bold flex justify-center bg-white text-emerald-500'>
-            Accept
-          </button>
+          <div className='flex items-center justify-center gap-6'>
+            <button onClick={() => router.push('/')}
+                    className='rounded p-2 font-bold flex justify-center border border-gray-300 text-white'>
+              Ignore
+            </button>
+            <button onClick={() => addFriendHandler()}
+                    className='rounded p-2 font-bold flex justify-center bg-white text-emerald-500 px-6'>
+              Accept
+            </button>
+          </div>
         </div>
       }
     </>

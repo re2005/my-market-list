@@ -8,52 +8,24 @@ import {signOutUser} from "@/firebase/auth";
 import Image from "next/image";
 import {useSearchParams} from "next/navigation";
 import UiFriendRequest from "@/components/UiFriendRequest";
-import React, {useState} from "react";
-import CloseIcon from "@/assets/close.svg";
+import React from "react";
+import UiQrCode from "@/components/UiQrCode";
 
 export default function Home() {
-  const {user, loading, addFriend}: any = useAuthContext();
-  const [isQrCodeVisible, setIsQrCodeVisible] = useState(false);
-
-  console.log(user);
-
+  const {user, loading, listFriends, setCurrentUid}: any = useAuthContext();
   const searchParams = useSearchParams();
-  const search = searchParams.get('friend')
-  const hasFriendQuery = search?.replace(/\?friend=/, '').split(';') ?? [];
-  const qrCodeElement = document.getElementById('qr-code') as any;
 
-  function closeQrCode() {
-    qrCodeElement.innerHTML = '';
-    setIsQrCodeVisible(false);
+  const search = searchParams.get('friend');
+  const urlQuery = (search as string)?.replace(/\?friend=/, '').split(';') ?? [];
+  const hasFriendQuery = urlQuery.length === 2 && isValidEmail(urlQuery[1]) ? urlQuery : [];
+
+  function isValidEmail(email: string) {
+    const emailRegex = /^[\w%+.-]+@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    return emailRegex.test(email);
   }
 
-  function shareQrCode() {
-    const options = {
-      width: 200,
-      height: 200,
-      type: 'svg',
-      data: `https://mymarketlist.vercel.app?friend=${user.uid};${user.email}`,
-      image: 'https://mymarketlist.vercel.app/my-market-list-logo.svg',
-      dotsOptions: {
-        type: 'rounded'
-      },
-      backgroundOptions: {
-        color: '#ffffff',
-      },
-      imageOptions: {
-        crossOrigin: 'anonymous',
-        margin: 2,
-        imageSize: 0.3,
-      }
-    }
-
-    import('qr-code-styling').then(({default: QRCodeStyling}) => {
-      const qrCode = new QRCodeStyling(options as any);
-
-      qrCodeElement.innerHTML = '';
-      qrCode.append(qrCodeElement);
-      setIsQrCodeVisible(true);
-    });
+  function handleListChange(event: any) {
+    setCurrentUid(event.target.value);
   }
 
   return (
@@ -63,31 +35,37 @@ export default function Home() {
       </div>
       }
       <section
-        className={`flex justify-center mt-10 lg:mt-14 gap-4 lg:gap-10 transition ${loading ? 'opacity-0' : 'opacity-100'}`}>
+        className={`flex justify-center mt-4 lg:mt-4 gap-4 lg:gap-10 transition ${loading ? 'opacity-0' : 'opacity-100'}`}>
         {user ? <div className='flex flex-col gap-10 w-full px-5 items-center'>
+          <UiFriendRequest hasFriendQuery={hasFriendQuery}/>
           <UiItemInput/>
           <UiList/>
 
-          <UiFriendRequest hasFriendQuery={hasFriendQuery}/>
-
-        <div className='flex gap-3 items-center justify-center'>
-          <p>
-            {user.email.replace(/@.*/, '')}
-          </p>
-          <button onClick={() => signOutUser()} className='text-xs bg-red-400 rounded px-2 py-1 text-white font-bold'>Logout
-          </button>
-        </div>
-          <div className='flex flex-col gap-4' id='qr-share'>
-            <button className='text-xs border px-2 p-1 rounded-2xl flex items-center gap-3 justify-center hover:bg-emerald-400'
-                    onClick={() => shareQrCode()}>
-              Request access
-            </button>
-            <div id='qr-code'/>
-            {isQrCodeVisible &&
-              <button onClick={() => closeQrCode()}><CloseIcon className='h-5 w-5 text-gray-500'/>
-              </button>}
+          <div className='flex flex-col gap-3 items-center justify-center'>
+            <div className='flex items-center gap-4'>
+              <p>
+                {user.email.replace(/@.*/, '')}
+              </p>
+              <button onClick={() => signOutUser()}
+                      className='text-xs bg-red-400 rounded px-2 py-1 text-white font-bold'>
+                Logout
+              </button>
+            </div>
+            <div className='flex items-center gap-2'>
+              Available lists:
+              <select onChange={(event) => handleListChange(event)}
+                      className='bg-white border border-gray-300 rounded px-2 py-1 text-xs'>
+                <option>My list</option>
+                {listFriends && Object.keys(listFriends).map((friend: any) => (
+                  <option key={friend} value={friend}>{listFriends[friend]}</option>
+                ))}
+              </select>
+            </div>
           </div>
-      </div> : <UiLogin/>}
+
+          <UiQrCode user={user}/>
+
+        </div> : <UiLogin/>}
     </section>
     </>
   )
