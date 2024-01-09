@@ -12,7 +12,7 @@ import React from "react";
 import UiQrCode from "@/components/UiQrCode";
 
 export default function Home() {
-  const {user, loading, listFriends, setCurrentUid}: any = useAuthContext();
+  const {user, loading, listFriends, setCurrentUid, currentUid}: any = useAuthContext();
   const searchParams = useSearchParams();
 
   const search = searchParams.get('friend');
@@ -52,10 +52,11 @@ export default function Home() {
               </button>
             </div>
             <div className='flex items-center gap-2'>
-              Available lists:
+              Your lists
               <select onChange={(event) => handleListChange(event)}
+                      value={currentUid}
                       className='bg-white border border-gray-300 rounded px-2 py-1 text-xs'>
-                <option>My list</option>
+                <option value={user.uid}>My list</option>
                 {listFriends && Object.keys(listFriends).map((friend: any) => (
                   <option key={friend} value={friend}>{listFriends[friend]}</option>
                 ))}

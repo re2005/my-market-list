@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useAuthContext} from "@/context/AppContext";
 import {useRouter} from "next/navigation";
 

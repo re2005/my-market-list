@@ -89,7 +89,9 @@ export const AuthContextProvider = ({children}) => {
         const { list, list_suggest, friends } = data;
         setList(list);
         setListSuggest(list_suggest);
-        setListFriends(friends);
+        if (currentUid === user.uid) {
+          setListFriends(friends);
+        }
       }
       setLoadingList(false);
     });
@@ -123,7 +125,8 @@ export const AuthContextProvider = ({children}) => {
       addItem,
       removeItem,
       addFriend,
-      setCurrentUid
+      setCurrentUid,
+      currentUid
     }}>
       {children}
     </AppContext.Provider>
