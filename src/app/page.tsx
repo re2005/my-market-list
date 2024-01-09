@@ -7,13 +7,25 @@ import UiLogin from "@/components/UiLogin";
 import {signOutUser} from "@/firebase/auth";
 import Image from "next/image";
 import {useSearchParams} from "next/navigation";
+import UiFriendRequest from "@/components/UiFriendRequest";
+import React, {useState} from "react";
+import CloseIcon from "@/assets/close.svg";
 
 export default function Home() {
   const {user, loading, addFriend}: any = useAuthContext();
+  const [isQrCodeVisible, setIsQrCodeVisible] = useState(false);
+
+  console.log(user);
 
   const searchParams = useSearchParams();
   const search = searchParams.get('friend')
   const hasFriendQuery = search?.replace(/\?friend=/, '').split(';') ?? [];
+  const qrCodeElement = document.getElementById('qr-code') as any;
+
+  function closeQrCode() {
+    qrCodeElement.innerHTML = '';
+    setIsQrCodeVisible(false);
+  }
 
   function shareQrCode() {
     const options = {
@@ -37,9 +49,10 @@ export default function Home() {
 
     import('qr-code-styling').then(({default: QRCodeStyling}) => {
       const qrCode = new QRCodeStyling(options as any);
-      const qrCodeElement = document.getElementById('qr-code') as any;
+
       qrCodeElement.innerHTML = '';
       qrCode.append(qrCodeElement);
+      setIsQrCodeVisible(true);
     });
   }
 
@@ -55,18 +68,7 @@ export default function Home() {
           <UiItemInput/>
           <UiList/>
 
-          {hasFriendQuery.length === 2 &&
-            <div className='flex flex-col gap-4 bg-emerald-400 w-full text-white rounded-2xl p-4'>
-              <p className='text-center'>
-                Would you like
-                <br/><strong>{hasFriendQuery[1]}</strong><br/>
-                to join this list
-              </p>
-              <button className='rounded p-2 font-bold flex justify-center bg-white text-emerald-500'>
-                Accept
-              </button>
-            </div>
-          }
+          <UiFriendRequest hasFriendQuery={hasFriendQuery}/>
 
         <div className='flex gap-3 items-center justify-center'>
           <p>
@@ -76,10 +78,14 @@ export default function Home() {
           </button>
         </div>
           <div className='flex flex-col gap-4' id='qr-share'>
-            <button className='text-center text-xs border px-2 p-1 rounded-2xl' onClick={() => shareQrCode()}>
+            <button className='text-xs border px-2 p-1 rounded-2xl flex items-center gap-3 justify-center hover:bg-emerald-400'
+                    onClick={() => shareQrCode()}>
               Request access
             </button>
             <div id='qr-code'/>
+            {isQrCodeVisible &&
+              <button onClick={() => closeQrCode()}><CloseIcon className='h-5 w-5 text-gray-500'/>
+              </button>}
           </div>
       </div> : <UiLogin/>}
     </section>
