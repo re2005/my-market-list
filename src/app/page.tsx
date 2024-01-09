@@ -13,7 +13,7 @@ export default function Home() {
 
   const searchParams = useSearchParams();
   const search = searchParams.get('friend')
-  const hasFriendQuery = search?.replace(/\?friend=/, '').split(';');
+  const hasFriendQuery = search?.replace(/\?friend=/, '').split(';') ?? [];
 
   function shareQrCode() {
     const options = {
