@@ -20,7 +20,7 @@ export default function Home() {
       width: 200,
       height: 200,
       type: 'svg',
-      data: `https://mymarketlist.vercel.app?friend=${user.uid};${user.email}}`,
+      data: `https://mymarketlist.vercel.app?friend=${user.uid};${user.email}`,
       image: 'https://mymarketlist.vercel.app/my-market-list-logo.svg',
       dotsOptions: {
         type: 'rounded'
