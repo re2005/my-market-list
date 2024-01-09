@@ -6,11 +6,14 @@ import {useAuthContext} from "@/context/AppContext";
 import UiLogin from "@/components/UiLogin";
 import {signOutUser} from "@/firebase/auth";
 import Image from "next/image";
+import {useSearchParams} from "next/navigation";
 
 export default function Home() {
   const {user, loading, addFriend}: any = useAuthContext();
 
-  const hasFriendQuery = location.search.replace(/\?friend=/, '').split(';');
+  const searchParams = useSearchParams();
+  const search = searchParams.get('friend')
+  const hasFriendQuery = search?.replace(/\?friend=/, '').split(';');
 
   function shareQrCode() {
     const options = {

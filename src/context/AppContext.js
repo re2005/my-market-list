@@ -6,6 +6,7 @@ import {getAuth, onAuthStateChanged} from 'firebase/auth';
 import firebase_app from '@/firebase/config';
 import getData from "@/firebase/getData";
 import {child, onValue, push, remove, set} from "firebase/database";
+import {useSearchParams} from "next/navigation";
 
 const auth = getAuth(firebase_app);
 
