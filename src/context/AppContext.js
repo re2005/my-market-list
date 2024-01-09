@@ -78,7 +78,7 @@ export const AuthContextProvider = ({children}) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
-        const docRef = getData('AT6oiEGBLPNrRD8mZIOSnU687pG3');
+        const docRef = getData(user.uid);
         onValue(docRef, function (snapshot) {
           const data = snapshot.val();
           if (data) {
