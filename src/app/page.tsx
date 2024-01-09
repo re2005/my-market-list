@@ -6,16 +6,14 @@ import {useAuthContext} from "@/context/AppContext";
 import UiLogin from "@/components/UiLogin";
 import {signOutUser} from "@/firebase/auth";
 import Image from "next/image";
-import QRCodeStyling from "qr-code-styling";
 
 export default function Home() {
   const {user, loading, addFriend}: any = useAuthContext();
 
-  const hasFriendQuery = globalThis.location.search.replace(/\?friend=/, '').split(';');
-  console.log('hasFriendQuery', hasFriendQuery);
+  const hasFriendQuery = location.search.replace(/\?friend=/, '').split(';');
 
   function shareQrCode() {
-    const qrCode = new QRCodeStyling({
+    const options = {
       width: 200,
       height: 200,
       type: 'svg',
@@ -32,11 +30,14 @@ export default function Home() {
         margin: 2,
         imageSize: 0.3,
       }
-    });
+    }
 
-    const qrCodeElement = document.getElementById('qr-code') as any;
-    qrCodeElement.innerHTML = '';
-    qrCode.append(qrCodeElement);
+    import('qr-code-styling').then(({default: QRCodeStyling}) => {
+      const qrCode = new QRCodeStyling(options as any);
+      const qrCodeElement = document.getElementById('qr-code') as any;
+      qrCodeElement.innerHTML = '';
+      qrCode.append(qrCodeElement);
+    });
   }
 
   return (
