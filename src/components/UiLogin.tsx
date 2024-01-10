@@ -10,7 +10,6 @@ export default function Page() {
   const [errors, setErrors] = useState(null)
   const [loading, setLoading] = useState(false)
 
-
   const handleForm = async (event: any) => {
     event.preventDefault()
     setLoading(true)
@@ -22,20 +21,20 @@ export default function Page() {
   }
 
   return (
-    <div className="form-wrapper">
-      <p>
+    <div>
+      <p className='text-center text-2xl'>
         Login to your account
       </p>
       <form onSubmit={handleForm} className='flex flex-col gap-4 mt-6'>
         <div className='flex flex-col gap-3'>
           <label htmlFor="user" className='flex gap-3 items-center'>
-            <p>List name:</p>
-            <input onChange={(e) => setEmail(e.target.value)} required name="user" id="user"
-                   placeholder="mylist" className='text-black border p-3 rounded'/>
+            <p>Email:</p>
+            <input onChange={(e) => setEmail(e.target.value)} required name="email" id="email"
+                   placeholder="my-email@gmail.com" className='text-black border p-3 rounded flex-1'/>
           </label>
           <label htmlFor="password" className='flex gap-3 items-center'>
             <p>Password</p>
-            <input onChange={(e) => setPassword(e.target.value)} required type="password" name="password"
+            <input onChange={(e) => setPassword(e.target.value)} required type="password" name="password" autoComplete="current-password"
                    id="password" placeholder="password" className='text-black border p-3 rounded'/>
           </label>
         </div>

@@ -10,6 +10,7 @@ import {useSearchParams} from "next/navigation";
 import UiFriendRequest from "@/components/UiFriendRequest";
 import React from "react";
 import UiQrCode from "@/components/UiQrCode";
+import Link from "next/link";
 
 export default function Home() {
   const {user, loading, listFriends, setCurrentUid, currentUid}: any = useAuthContext();
@@ -66,7 +67,7 @@ export default function Home() {
 
           <UiQrCode user={user}/>
 
-        </div> : <UiLogin/>}
+        </div> : <div><UiLogin/> <hr className='mt-4 mb-6'/> <Link href='/signup' className='border rounded p-2 font-bold flex justify-center'>Sign Up</Link></div>}
     </section>
     </>
   )

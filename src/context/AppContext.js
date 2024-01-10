@@ -17,12 +17,12 @@ export const AuthContextProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadingList, setLoadingList] = useState(true);
-  const [list, setList] = useState({});
+  const [list, setList] = useState(null);
   const [listSuggest, setListSuggest] = useState({});
   const [listFriends, setListFriends] = useState(null);
   const [currentUid, setCurrentUid] = useState(null);
 
-  function getTotal(suggest) {
+  function getTotalSuggestAmount(suggest) {
     let current;
     if (!listSuggest[suggest] || !listSuggest[suggest].amount) {
       current = 1;
@@ -42,7 +42,7 @@ export const AuthContextProvider = ({children}) => {
       const listSuggestion = child(docRef, 'list_suggest'+ '/' + item);
       await set(listSuggestion, {
         value: item,
-        amount: getTotal(item)
+        amount: getTotalSuggestAmount(item)
       });
     } catch (error) {
       console.log(error);
