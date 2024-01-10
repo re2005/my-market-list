@@ -16,7 +16,7 @@ export default function Home() {
   const {user, loading, listFriends, setCurrentUid, currentUid}: any = useAuthContext();
   const searchParams = useSearchParams();
 
-  const search = searchParams.get('friend');
+  const search = searchParams?.get('friend');
   const urlQuery = (search as string)?.replace(/\?friend=/, '').split(';') ?? [];
   const hasFriendQuery = urlQuery.length === 2 && isValidEmail(urlQuery[1]) ? urlQuery : [];
 
