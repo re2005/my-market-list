@@ -13,7 +13,7 @@ export default function Page() {
   const handleForm = async (event: any) => {
     event.preventDefault()
     setLoading(true)
-    const {error}: any = await signIn(email + '@gmail.com', password)
+    const {error}: any = await signIn(email, password)
     if (error) {
       setErrors(error.code.replace(/auth\//, '').replace(/-/g, ' '))
     }

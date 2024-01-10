@@ -36,23 +36,23 @@ export default function Home() {
       </div>
       }
       <section
-        className={`flex justify-center mt-4 lg:mt-4 gap-4 lg:gap-10 transition ${loading ? 'opacity-0' : 'opacity-100'}`}>
+        className={`flex justify-center gap-4 lg:gap-10 transition ${loading ? 'opacity-0' : 'opacity-100'}`}>
         {user ? <div className='flex flex-col gap-10 w-full px-5 items-center'>
           <UiFriendRequest hasFriendQuery={hasFriendQuery}/>
           <UiItemInput/>
           <UiList/>
 
-          <div className='flex flex-col gap-3 items-center justify-center'>
-            <div className='flex items-center gap-4'>
+          <div className='grid grid-cols-2 gap-3 items-center w-full border-t pt-5 mt-4'>
+            <div className='flex flex-col items-center gap-4'>
               <p>
-                {user.email.replace(/@.*/, '')}
+                {user.email}
               </p>
               <button onClick={() => signOutUser()}
-                      className='text-xs bg-red-400 rounded px-2 py-1 text-white font-bold'>
-                Logout
+                      className='text-white text-xs bg-gray-400 rounded px-2 py-0.5 font-bold'>
+                LOGOUT
               </button>
             </div>
-            <div className='flex items-center gap-2'>
+            <div className='flex flex-col items-center justify-center gap-2'>
               Your lists
               <select onChange={(event) => handleListChange(event)}
                       value={currentUid}

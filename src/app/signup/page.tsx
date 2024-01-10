@@ -17,7 +17,7 @@ export default function Signup() {
 
   return (
     <section
-      className='flex justify-center mt-4 lg:mt-4 gap-4 lg:gap-10'>
+      className='flex justify-center gap-4 lg:gap-10'>
       <UiSignUp/>
     </section>
   )
