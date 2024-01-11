@@ -5,7 +5,7 @@ import {createContext, useContext, useEffect, useState} from 'react';
 import {getAuth, onAuthStateChanged} from 'firebase/auth';
 import firebase_app from '@/firebase/config';
 import getData from "@/firebase/getData";
-import {child, onValue, push, remove, set} from "firebase/database";
+import {child, onValue, push, remove, set, get} from "firebase/database";
 
 const auth = getAuth(firebase_app);
 
@@ -20,7 +20,12 @@ export const AuthContextProvider = ({children}) => {
   const [list, setList] = useState(null);
   const [listSuggest, setListSuggest] = useState({});
   const [listFriends, setListFriends] = useState(null);
-  const [currentUid, setCurrentUid] = useState(null);
+  const [currentUid, setCurrentUidState] = useState(null);
+
+  function setCurrentUid(uid) {
+    localStorage.setItem('CURRENT_UID', uid);
+    setCurrentUidState(uid);
+  }
 
   function getTotalSuggestAmount(suggest) {
     let current;
@@ -33,7 +38,7 @@ export const AuthContextProvider = ({children}) => {
   }
 
   async function addItem(item) {
-    const docRef = getData(user.uid);
+    const docRef = getData(currentUid);
     try {
       const list = child(docRef, 'list');
       const newItem = push(list);
@@ -52,7 +57,7 @@ export const AuthContextProvider = ({children}) => {
   }
 
   async function addFriend(uid, email) {
-    const docRef = getData(user.uid + '/friends');
+    const docRef = getData(currentUid + '/friends');
     try {
       const list = child(docRef, uid);
       await set(list, email);
@@ -64,7 +69,7 @@ export const AuthContextProvider = ({children}) => {
   }
 
   async function removeItem(item, fromList) {
-    const docRef = getData(user.uid);
+    const docRef = getData(currentUid);
     try {
       const list = child(docRef, fromList + '/' + item);
       await remove(list);
@@ -76,6 +81,7 @@ export const AuthContextProvider = ({children}) => {
   }
 
   useEffect(() => {
+    setLoadingList(true);
     if (!currentUid) {
       return;
     }
@@ -86,12 +92,9 @@ export const AuthContextProvider = ({children}) => {
     const previousListener = onValue(docRef, function (snapshot) {
       const data = snapshot.val();
       if (data) {
-        const { list, list_suggest, friends } = data;
+        const { list, list_suggest } = data;
         setList(list);
         setListSuggest(list_suggest);
-        if (currentUid === user.uid) {
-          setListFriends(friends);
-        }
       }
       setLoadingList(false);
     });
@@ -104,7 +107,13 @@ export const AuthContextProvider = ({children}) => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUser(user);
-        await setCurrentUid(user.uid);
+        const storedUid = localStorage.getItem('CURRENT_UID');
+        await setCurrentUidState(storedUid || user.uid);
+
+        const docRef = getData(user.uid + '/friends');
+        const snapshot = await get(docRef);
+        setListFriends(snapshot.val());
+
       } else {
         setUser(null);
       }
