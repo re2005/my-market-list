@@ -1,23 +1,21 @@
-.DS_Store
 node_modules
-/dist
 
-# local env files
-.env.local
-.env.*.local
+# Output
+.output
+.vercel
+/.svelte-kit
+/build
 
-# Log files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# OS
+.DS_Store
+Thumbs.db
 
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw*
-/src/config.js
-/.firebase*
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

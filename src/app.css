@@ -1,0 +1,26 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+:root {
+	--green-1: #79ca08;
+	--green-2: #12d8a5;
+	--gray: #4a4a4a;
+}
+html {
+	height: 100%;
+}
+
+html * {
+	font-family: 'Dosis', Arial, sans-serif;
+	font-weight: 500;
+}
+body {
+	height: 100%;
+	color: var(--gray);
+	background: white;
+}
+
+.green-gradient-bg {
+	background: linear-gradient(to left, var(--green-1), var(--green-2));
+}
