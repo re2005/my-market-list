@@ -7,21 +7,24 @@
 	}
 </script>
 
-<div class="mt-4 grid w-full grid-cols-2 items-center gap-3 border-t pt-5">
-	<div class="flex flex-col items-center gap-4">
-		<p>{$user.email}</p>
-		<button on:click={logout} class="rounded bg-gray-400 px-2 py-0.5 text-xs font-bold text-white">
+<div class="mt-4 grid w-full grid-cols-2 gap-3 border-t border-t-gray-200 pt-6">
+	<div class="flex flex-col gap-4 text-sm">
+		<p>{$user?.email}</p>
+		<button
+			on:click={logout}
+			class="self-start rounded bg-gray-400 px-3 py-1 text-xs font-bold text-white hover:opacity-60"
+		>
 			LOGOUT
 		</button>
 	</div>
-	<div class="flex flex-col items-center justify-center gap-2">
-		<p>Your lists</p>
+	<div class="flex flex-col items-end gap-4">
+		<p>Lists connected</p>
 		<select
 			on:change={handleListChange}
 			bind:value={$currentUid}
 			class="rounded border border-gray-300 bg-white px-2 py-1 text-xs"
 		>
-			<option value={$user.uid}>My list</option>
+			<option value={$user?.uid}>My list</option>
 			{#if $listFriends}
 				{#each Object.keys($listFriends) as friend}
 					<option value={friend}>{$listFriends[friend]}</option>

@@ -4,6 +4,7 @@
 	import { user, loadingList, loading, currentUid } from '$lib/store';
 	import UiUserInfo from '../components/UiUserInfo.svelte';
 	import UiList from '../components/UiList.svelte';
+	import UiQrCode from '../components/UiQrCode.svelte';
 </script>
 
 {#if $loading}
@@ -23,6 +24,8 @@
 			<UiList />
 
 			<UiUserInfo />
+
+			<UiQrCode {$user} />
 		</section>
 	{:else}
 		<UiLogin />
