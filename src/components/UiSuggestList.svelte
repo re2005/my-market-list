@@ -8,8 +8,7 @@
 	export let onAddItem: (suggest: string) => void;
 
 	let suggests = writable<string[]>([]);
-
-	console.log(suggestsList);
+	let sureToRemove = writable<string[]>([]);
 
 	// Reactive block to filter suggestions whenever `item` or `suggestsList` changes
 	$: {
@@ -44,11 +43,42 @@
 					<button on:click={() => addItem(suggest)} class="flex flex-1 pl-1">
 						{suggest}
 					</button>
-					<button on:click={() => removeItem(suggest, 'list_suggest')}>
-						<IconClose classes="h-6 w-6 text-red-300" />
+					<button on:click={() => sureToRemove.set([suggest])} class="hover:opacity-80">
+						<IconClose classes="h-5 w-5 text-red-400" />
 					</button>
+					{#if $sureToRemove.includes(suggest)}
+						<div class="fade-in flex gap-3 text-xs">
+							<button
+								on:click={() => removeItem(suggest, 'list_suggest')}
+								class="text-green-600 hover:opacity-80"
+							>
+								confirm
+							</button>
+							<button
+								on:click={() => sureToRemove.update((n) => n.filter((item) => item !== suggest))}
+								class="text-gray-500">cancel</button
+							>
+						</div>
+					{/if}
 				</li>
 			{/each}
 		</ul>
 	{/if}
 </div>
+
+<style>
+	.fade-in {
+		animation: fadeIn 0.15s ease-out;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			max-width: 0;
+		}
+		to {
+			opacity: 1;
+			max-width: 100px;
+		}
+	}
+</style>

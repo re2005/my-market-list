@@ -24,3 +24,7 @@ body {
 .green-gradient-bg {
 	background: linear-gradient(to left, var(--green-1), var(--green-2));
 }
+
+.hover\:green-gradient-bg:hover {
+	background: linear-gradient(to left, var(--green-1), var(--green-2));
+}
