@@ -1,21 +1,20 @@
 <script lang="ts">
-	// import { onMount } from 'svelte';
-	import IconShare from './icons/icon-share.svelte';
 	import IconClose from './icons/icon-close.svelte';
-	let user = {
-		uid: '',
-		email: ''
-	};
+	import { user } from '$lib/store';
 
 	let isQrCodeVisible = false;
 	let qrCodeElement: HTMLElement | null = null;
+
+	console.log(
+		`https://mymarketlist.vercel.app?friend=${$user?.uid};${encodeURIComponent($user?.email)}`
+	);
 
 	async function shareQrCode() {
 		const options = {
 			width: 180,
 			height: 180,
 			type: 'svg',
-			data: `https://mymarketlist.vercel.app?friend=${user.uid};${encodeURIComponent(user.email)}`,
+			data: `https://mymarketlist.vercel.app?friend=${$user?.uid};${encodeURIComponent($user?.email)}`,
 			image: 'https://mymarketlist.vercel.app/my-market-list-logo.svg',
 			dotsOptions: {
 				type: 'rounded'
@@ -52,11 +51,14 @@
 		class="hover:green-gradient-bg flex items-center justify-center gap-3 rounded-xl border p-2 px-4 text-xs"
 		on:click={shareQrCode}
 	>
-		<IconShare classes="h-4 w-4 text-gray-500" /> Share my list
+		Share my list
 	</button>
 	<div bind:this={qrCodeElement} id="qr-code"></div>
 	{#if isQrCodeVisible}
-		<button on:click={closeQrCode} class="flex items-center justify-center gap-2 text-sm">
+		<button
+			on:click={closeQrCode}
+			class="flex items-center justify-center gap-2 text-sm hover:opacity-80"
+		>
 			<IconClose classes="h-4 w-4 text-gray-500" /> CLOSE
 		</button>
 	{/if}

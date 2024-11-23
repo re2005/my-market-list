@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { addItem, listSuggest, loading } from '$lib/store'; // Replace with your store path
 	import SuggestList from './UiSuggestList.svelte'; // Adjust the path as needed
+	import IconClose from './icons/icon-close.svelte';
 
 	let inputValue = '';
 
@@ -16,7 +17,7 @@
 </script>
 
 <div class={`relative w-full ${$loading ? 'pointer-events-none' : ''}`}>
-	<form on:submit|preventDefault={handleSubmit} class="flex justify-center gap-3">
+	<form on:submit|preventDefault={handleSubmit} class="relative flex justify-center gap-3">
 		<input
 			bind:value={inputValue}
 			required
@@ -31,6 +32,14 @@
 		>
 			add
 		</button>
+		{#if inputValue.length > 0}
+			<button
+				class="absolute left-0 top-3 translate-x-[270px] text-gray-400"
+				on:click={() => (inputValue = '')}
+			>
+				<IconClose classes="h-5 w-5" />
+			</button>
+		{/if}
 	</form>
 
 	<SuggestList suggestsList={$listSuggest} item={inputValue} {onAddItem} />

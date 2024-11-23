@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../app.css';
-	import UiFooter from '../components/UiFooter.svelte';
-	import UiHeader from '../components/UiHeader.svelte';
+	import UiFooter from '@components/UiFooter.svelte';
+	import UiHeader from '@components/UiHeader.svelte';
 
 	let { children } = $props();
 </script>
@@ -14,8 +14,11 @@
 		rel="stylesheet"
 	/>
 </svelte:head>
+
 <div class="flex min-h-screen flex-col">
-	<UiHeader />
+	<a href="/">
+		<UiHeader />
+	</a>
 	<div class="container mx-auto my-4 mt-10 max-w-md md:mt-14">
 		{@render children()}
 	</div>

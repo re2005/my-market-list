@@ -1,14 +1,16 @@
 <script lang="ts">
-	import UiLogin from '../components/UiLogin.svelte';
-	import UiItemInput from '../components/UiItemInput.svelte';
+	import UiLogin from '@components/UiLogin.svelte';
+	import UiItemInput from '@components/UiItemInput.svelte';
 	import { user, loadingList, loading, currentUid } from '$lib/store';
-	import UiUserInfo from '../components/UiUserInfo.svelte';
-	import UiList from '../components/UiList.svelte';
-	import UiQrCode from '../components/UiQrCode.svelte';
+	import UiUserInfo from '@components/UiUserInfo.svelte';
+	import UiList from '@components/UiList.svelte';
+	import UiQrCode from '@components/UiQrCode.svelte';
+	import UiFriendRequest from '@components/UiFriendRequest.svelte';
+	import IconLoading from '@components/icons/icon-loading.svelte';
 </script>
 
 {#if $loading}
-	<img src="/icons/loading.svg" alt="loading" width="90" height="90" class="mx-auto" />
+	<IconLoading classes="mx-auto" />
 {/if}
 
 <main
@@ -16,16 +18,18 @@
 >
 	{#if $user && !$loading}
 		{#if $loadingList}
-			<img src="/icons/loading.svg" alt="loading" width="90" height="90" class="mx-auto" />
+			<IconLoading classes="mx-auto" />
 		{/if}
 
 		<section class="flex w-full flex-col items-center gap-10 px-5">
+			<UiFriendRequest />
+
 			<UiItemInput />
 			<UiList />
 
 			<UiUserInfo />
 
-			<UiQrCode {$user} />
+			<UiQrCode />
 		</section>
 	{:else}
 		<UiLogin />

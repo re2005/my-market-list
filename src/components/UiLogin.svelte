@@ -24,22 +24,25 @@
 	};
 </script>
 
-<div>
-	<p class="text-center text-2xl">Welcome back!</p>
+<div class="min-w-[300px]">
+	<p class="text-center text-2xl">Welcome back :)</p>
 	<form on:submit|preventDefault={handleLogin} class="mt-6 flex flex-col gap-4">
 		<div class="flex flex-col gap-3">
-			<label for="email" class="flex items-center gap-3">
-				<p>Email:</p>
+			<label for="email">
+				<p>Email</p>
 				<input
 					bind:value={email}
 					required
+					type="email"
 					name="email"
 					id="email"
 					placeholder="my-email@gmail.com"
-					class="flex-1 rounded border p-3 text-black"
+					autocomplete="email"
+					class="w-full rounded border p-3 text-black"
 				/>
 			</label>
-			<label for="password" class="flex items-center gap-3">
+
+			<label for="password">
 				<p>Password</p>
 				<input
 					bind:value={password}
@@ -48,10 +51,12 @@
 					name="password"
 					id="password"
 					placeholder="password"
-					class="rounded border p-3 text-black"
+					autocomplete="current-password"
+					class="w-full rounded border p-3 text-black"
 				/>
 			</label>
 		</div>
+
 		<button
 			type="submit"
 			class="green-gradient-bg flex justify-center rounded p-2 font-bold text-white"
@@ -67,5 +72,11 @@
 		{#if authError}
 			<p class="text-red-400">{authError}</p>
 		{/if}
+	</div>
+
+	<div class="mt-10">
+		<p class="mt-4 text-center text-sm">
+			Don't have an account? <a href="/signup" class="text-green-600">Sign up</a>
+		</p>
 	</div>
 </div>

@@ -1,5 +1,5 @@
 import { firebaseAuth } from '$lib/firebase';
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from 'firebase/auth';
 
 // Sign-in function
 export async function login(email: string, password: string) {
@@ -9,6 +9,10 @@ export async function login(email: string, password: string) {
 		console.error('Login error:', error);
 		throw error;
 	}
+}
+
+export function signUp(email: string, password: string) {
+	return createUserWithEmailAndPassword(firebaseAuth, email, password);
 }
 
 // Sign-out function

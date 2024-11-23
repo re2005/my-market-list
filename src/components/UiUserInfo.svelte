@@ -1,14 +1,14 @@
-<script>
-	import { user, listFriends, currentUid } from '$lib/store';
+<script lang="ts">
+	import { user, listFriends, currentUid, removeFriend } from '$lib/store';
 	import { logout } from '$lib/auth';
 
-	function handleListChange(event) {
-		currentUid.set(event.target.value);
+	function handleListChange(event: Event) {
+		currentUid.set((event.target as HTMLSelectElement).value);
 	}
 </script>
 
 <div class="mt-4 grid w-full grid-cols-2 gap-3 border-t border-t-gray-200 pt-6">
-	<div class="flex flex-col gap-4 text-sm">
+	<div class="flex flex-col gap-2 text-sm">
 		<p>{$user?.email}</p>
 		<button
 			on:click={logout}
@@ -17,8 +17,15 @@
 			LOGOUT
 		</button>
 	</div>
-	<div class="flex flex-col items-end gap-4">
-		<p>Lists connected</p>
+	<div class="flex flex-col items-end gap-2">
+		<div class="flex gap-2">
+			<p>Lists connected</p>
+			{#if $user?.uid !== $currentUid}
+				<button on:click={() => removeFriend($currentUid!)} class="color-red-400 text-xs"
+					>remove</button
+				>
+			{/if}
+		</div>
 		<select
 			on:change={handleListChange}
 			bind:value={$currentUid}

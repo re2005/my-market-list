@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { loadingList, list, removeItem } from '$lib/store'; // Adjust the path as needed
-	import IconClose from '../components/icons/icon-close.svelte'; // Adjust path to your CloseIcon SVG
+	import { loadingList, list, removeItem } from '$lib/store';
+	import IconClose from '@components/icons/icon-close.svelte';
+	import IconLoading from '@components/icons/icon-loading.svelte';
 </script>
 
 <div class="w-full md:w-[420px]">
 	{#if $loadingList}
-		<img src="/loading.svg" alt="loading" width="90" height="90" class="mx-auto" />
+		<IconLoading classes="mx-auto" />
 	{/if}
 
 	<div>
@@ -20,7 +21,7 @@
 					</li>
 				{/each}
 			{:else if !$loadingList}
-				<p class="text-center">Your list is empty.</p>
+				<p class="text-center">This list is empty</p>
 			{/if}
 		</ul>
 	</div>

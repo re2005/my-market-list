@@ -1,5 +1,5 @@
 <script lang="ts">
-	import IconClose from '../components/icons/icon-close.svelte'; // Adjust the path as needed
+	import IconClose from '@components/icons/icon-close.svelte'; // Adjust the path as needed
 	import { writable } from 'svelte/store';
 	import { removeItem } from '$lib/store'; // Replace with your store or context
 

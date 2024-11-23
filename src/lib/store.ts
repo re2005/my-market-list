@@ -9,13 +9,17 @@ export const user = writable<User | null>(null);
 export const loading = writable(true);
 export const loadingList = writable(true);
 export const list = writable([]);
-export const listSuggest = writable<{ [key: string]: { amount: number } }>({});
+export const listSuggest = writable<Record<string, { value: string; amount: number }>>({});
 export const listFriends = writable(null);
 export const currentUid = writable<string | null>(null);
 
 const getTotalSuggestAmount = (suggest: string) => {
 	let current;
-	if (!storeGet(listSuggest)[suggest] || !storeGet(listSuggest)[suggest].amount) {
+	if (
+		!storeGet(listSuggest) ||
+		!storeGet(listSuggest)[suggest] ||
+		!storeGet(listSuggest)[suggest].amount
+	) {
 		current = 1;
 	} else {
 		current = storeGet(listSuggest)[suggest].amount + 1;
@@ -57,14 +61,42 @@ export const removeItem = async (item: any, fromList: any) => {
 	}
 };
 
+function isValidFirebaseUid(uid: string) {
+	const firebaseUidRegex = /^[a-zA-Z0-9]{28}$/;
+	return firebaseUidRegex.test(uid);
+}
+
+export const removeFriend = async (uid: string) => {
+	const ownerUid = storeGet(user)?.uid;
+	if (!ownerUid) return;
+	if (!isValidFirebaseUid(uid)) {
+		console.warn('Invalid UUID');
+		return;
+	}
+	try {
+		const docRef = getData(`${ownerUid}/friends`);
+		const listRef = child(docRef, uid);
+		await remove(listRef);
+	} catch (error) {
+		console.warn('Error removing friend:', error);
+	}
+};
+
 export const addFriend = async (uid: string, email: string) => {
-	// const docRef = child(firebaseDatabase, `users/${$currentUid}/friends`);
-	// try {
-	// 	const listRef = child(docRef, uid);
-	// 	await set(listRef, email);
-	// } catch (error) {
-	// 	console.error('Error adding friend:', error);
-	// }
+	if (!isValidFirebaseUid(uid)) {
+		console.warn('Invalid UUID');
+		return;
+	}
+	const ownerUid = storeGet(currentUid);
+	if (!ownerUid) return;
+	try {
+		const docRef = getData(`${ownerUid}/friends`);
+		console.log('docRef', docRef);
+		const listRef = child(docRef, uid);
+		await set(listRef, email);
+	} catch (error) {
+		console.warn('Error adding friend:', error);
+	}
 };
 
 function getData(uuid: string) {
