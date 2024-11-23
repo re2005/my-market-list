@@ -40,7 +40,7 @@
 		>
 			{#each $suggests as suggest, index}
 				<li class="flex items-center justify-between gap-5 rounded-xl px-3 py-1 hover:bg-green-100">
-					<button on:click={() => addItem(suggest)} class="flex flex-1 pl-1">
+					<button on:click={() => addItem(suggest)} class="flex flex-1 pl-1 text-left">
 						{suggest}
 					</button>
 					<button on:click={() => sureToRemove.set([suggest])} class="hover:opacity-80">
@@ -63,10 +63,14 @@
 				</li>
 			{/each}
 		</ul>
+		<div class="gradient-bg absolute bottom-0 h-10 w-[99.6%] w-full rounded-xl"></div>
 	{/if}
 </div>
 
 <style>
+	.gradient-bg {
+		background: linear-gradient(180deg, transparent 30%, #f6f6f6 100%);
+	}
 	.fade-in {
 		animation: fadeIn 0.15s ease-out;
 	}
