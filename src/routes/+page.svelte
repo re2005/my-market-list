@@ -1,7 +1,7 @@
 <script lang="ts">
 	import UiLogin from '@components/UiLogin.svelte';
 	import UiItemInput from '@components/UiItemInput.svelte';
-	import { user, loadingList, loading, currentUid } from '$lib/store';
+	import { user, loadingList, loading, listInvites, confirmFriend } from '$lib/store';
 	import UiUserInfo from '@components/UiUserInfo.svelte';
 	import UiList from '@components/UiList.svelte';
 	import UiQrCode from '@components/UiQrCode.svelte';
@@ -23,6 +23,22 @@
 
 		<section class="flex w-full flex-col items-center gap-10 px-5">
 			<UiFriendRequest />
+
+			{#if $listInvites && $listInvites[$user.uid]}
+				<div class="flex gap-4 rounded-xl border p-5">
+					<p class="">
+						The user
+						<i class="text-green-500">{Object.values($listInvites[$user.uid])}</i><br />
+						added you as a friend
+					</p>
+					<button
+						on:click={() => confirmFriend($listInvites[$user.uid])}
+						class="rounded-2xl border border-gray-200 bg-gray-600 px-6 text-lg text-white shadow-lg transition-all hover:opacity-90"
+					>
+						Accept
+					</button>
+				</div>
+			{/if}
 
 			<UiItemInput />
 			<UiList />

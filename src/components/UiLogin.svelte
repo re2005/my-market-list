@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { login } from '$lib/auth';
 	import IconLoadingCircle from './icons/icon-loading-circle.svelte';
+	import { forgotPassword } from '$lib/auth';
 
 	let email = '';
 	let password = '';
@@ -78,5 +79,12 @@
 		<p class="mt-4 text-center text-sm">
 			Don't have an account? <a href="/signup" class="text-green-600">Sign up</a>
 		</p>
+	</div>
+	<div class="mt-4 text-center text-xs">
+		<button
+			on:click={() => forgotPassword(email)}
+			disabled={!email}
+			class={email ? '' : 'pointer-events-none'}>Forgot password</button
+		>
 	</div>
 </div>

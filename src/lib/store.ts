@@ -11,7 +11,12 @@ export const loadingList = writable(true);
 export const list = writable([]);
 export const listSuggest = writable<Record<string, { value: string; amount: number }>>({});
 export const listFriends = writable(null);
+export const listInvites = writable(null);
 export const currentUid = writable<string | null>(null);
+
+function getData(uuid: string) {
+	return ref(firebaseDatabase, uuid);
+}
 
 const getTotalSuggestAmount = (suggest: string) => {
 	let current;
@@ -87,20 +92,54 @@ export const addFriend = async (uid: string, email: string) => {
 		console.warn('Invalid UUID');
 		return;
 	}
-	const ownerUid = storeGet(currentUid);
-	if (!ownerUid) return;
+	const ownerUser = storeGet(user);
+	if (!ownerUser) return;
 	try {
-		const docRef = getData(`${ownerUid}/friends`);
-		console.log('docRef', docRef);
+		// Add to the owner's friends list
+		const docRef = getData(`${ownerUser.uid}/friends`);
 		const listRef = child(docRef, uid);
 		await set(listRef, email);
+
+		// Add to general invites
+		const sharedLists = getData(`sharedLists/${uid}`);
+		const sharedListsRef = child(sharedLists, ownerUser.uid);
+		await set(sharedListsRef, ownerUser.email);
 	} catch (error) {
 		console.warn('Error adding friend:', error);
 	}
 };
 
-function getData(uuid: string) {
-	return ref(firebaseDatabase, uuid);
+export function confirmFriend(friend: { [key: string]: string }) {
+	console.log('confirmFriend', friend);
+	const ownerUser = storeGet(user);
+	if (!ownerUser || !friend) return;
+
+	// Add to the owner's friends list
+	const docRef = getData(`${ownerUser.uid}/friends`);
+	const listRef = child(docRef, Object.keys(friend)[0]);
+	set(listRef, Object.values(friend)[0]);
+
+	// Remove from general invites
+	const sharedLists = getData(`sharedLists/${ownerUser.uid}`);
+	const sharedListsRef = child(sharedLists, Object.keys(friend)[0]);
+	remove(sharedListsRef);
+}
+
+// SUbscribe into sharedLists
+function listenToSharedLists() {
+	const sharedLists = getData('sharedLists');
+	const unsubscribe = onValue(sharedLists, (snapshot) => {
+		listInvites.set(snapshot.val());
+	});
+	return unsubscribe;
+}
+
+function listenToFriendsList(uid: string) {
+	const friendsRef = getData(`${uid}/friends`);
+	const unsubscribe = onValue(friendsRef, (snapshot) => {
+		listFriends.set(snapshot.val());
+	});
+	return unsubscribe;
 }
 
 // Listen to authentication changes
@@ -109,9 +148,12 @@ onAuthStateChanged(firebaseAuth, async (firebaseUser) => {
 	if (firebaseUser) {
 		user.set(firebaseUser);
 		currentUid.set(firebaseUser.uid);
-		const friendsRef = getData(`${firebaseUser.uid}/friends`);
-		const snapshot = await get(friendsRef);
-		listFriends.set(snapshot.val());
+
+		// Get and Friends list
+		listenToFriendsList(firebaseUser.uid);
+
+		// Get shared lists
+		listenToSharedLists();
 	} else {
 		user.set(null);
 	}
@@ -119,12 +161,21 @@ onAuthStateChanged(firebaseAuth, async (firebaseUser) => {
 });
 
 // Subscribe to changes in the current user's list
+let unsubscribe: (() => void) | null = null;
+
 currentUid.subscribe((uid) => {
+	if (unsubscribe) {
+		unsubscribe();
+		unsubscribe = null;
+	}
+
 	if (!uid) return;
+
+	console.log('Subscribing to list changes', uid);
 
 	loadingList.set(true);
 	const docRef = getData(uid);
-	const unsubscribe = onValue(docRef, (snapshot) => {
+	unsubscribe = onValue(docRef, (snapshot) => {
 		const data = snapshot.val();
 		if (data) {
 			list.set(data.list);
@@ -132,6 +183,4 @@ currentUid.subscribe((uid) => {
 		}
 		loadingList.set(false);
 	});
-
-	return () => unsubscribe();
 });

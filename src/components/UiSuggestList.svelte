@@ -36,7 +36,7 @@
 <div class="absolute top-14 flex w-full justify-center">
 	{#if $suggests.length !== 0}
 		<ul
-			class="left-10 right-10 top-14 flex h-[184px] w-full flex-col gap-2 overflow-scroll rounded-2xl border bg-gray-50 px-2 py-1 shadow md:w-[430px]"
+			class="left-10 right-10 top-14 flex max-h-[184px] w-full flex-col gap-2 overflow-scroll rounded-2xl border bg-gray-50 px-2 py-1 pb-6 shadow md:w-[430px]"
 		>
 			{#each $suggests as suggest, index}
 				<li class="flex items-center justify-between gap-5 rounded-xl px-3 py-1 hover:bg-green-100">
@@ -63,7 +63,7 @@
 				</li>
 			{/each}
 		</ul>
-		<div class="gradient-bg absolute bottom-0 h-10 w-[99.6%] w-full rounded-xl"></div>
+		<div class="gradient-bg pointer-events-none absolute bottom-0 h-10 w-[99.6%] rounded-xl"></div>
 	{/if}
 </div>
 
