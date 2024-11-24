@@ -17,29 +17,32 @@
 </script>
 
 <div class={`relative w-full ${$loading ? 'pointer-events-none' : ''}`}>
-	<form on:submit|preventDefault={handleSubmit} class="relative flex justify-center gap-3">
-		<input
-			bind:value={inputValue}
-			required
-			name="item"
-			placeholder="Strawberries"
-			autocomplete="off"
-			class="w-full rounded-2xl border px-3 py-2 text-black shadow md:w-72"
-		/>
+	<form on:submit|preventDefault={handleSubmit} class="flex justify-center gap-3">
+		<div class="relative">
+			<input
+				bind:value={inputValue}
+				required
+				name="item"
+				placeholder="Strawberries"
+				autocomplete="off"
+				class="w-full rounded-2xl border px-3 py-2 text-black shadow md:w-72"
+			/>
+			{#if inputValue.length > 0}
+				<button
+					type="button"
+					class="absolute right-3 top-3 text-gray-400"
+					on:click={() => (inputValue = '')}
+				>
+					<IconClose classes="h-5 w-5" />
+				</button>
+			{/if}
+		</div>
 		<button
 			type="submit"
 			class="green-gradient-bg rounded-2xl border border-gray-200 px-6 text-lg text-white shadow-lg transition-all hover:opacity-90"
 		>
 			add
 		</button>
-		{#if inputValue.length > 0}
-			<button
-				class="absolute left-0 top-3 translate-x-[270px] text-gray-400"
-				on:click={() => (inputValue = '')}
-			>
-				<IconClose classes="h-5 w-5" />
-			</button>
-		{/if}
 	</form>
 
 	<SuggestList suggestsList={$listSuggest} item={inputValue} {onAddItem} />
