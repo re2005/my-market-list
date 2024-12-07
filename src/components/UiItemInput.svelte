@@ -23,6 +23,7 @@
 				bind:value={inputValue}
 				required
 				name="item"
+				id="item"
 				placeholder="Strawberries"
 				autocomplete="off"
 				class="w-full rounded-2xl border px-3 py-2 text-black shadow md:w-72"
@@ -39,6 +40,7 @@
 		</div>
 		<button
 			type="submit"
+			id="add-item"
 			class="green-gradient-bg rounded-2xl border border-gray-200 px-6 text-lg text-white shadow-lg transition-all hover:opacity-90"
 		>
 			add
