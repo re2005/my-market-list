@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { login } from '$lib/auth';
+	import { login, isValidEmail } from '$lib/auth';
 	import IconLoadingCircle from './icons/icon-loading-circle.svelte';
 	import { forgotPassword } from '$lib/auth';
 
@@ -7,8 +7,10 @@
 	let password = '';
 	let authError: string | null = null;
 	let loading = false;
+	let forgotPasswordError: string | null = null;
+	let emailPasswordSent: boolean = false;
 
-	const handleLogin = async (event: Event) => {
+	async function handleLogin(event: Event) {
 		event.preventDefault();
 		authError = null;
 		loading = true;
@@ -22,7 +24,16 @@
 		} finally {
 			loading = false;
 		}
-	};
+	}
+
+	async function handleForgotPassword() {
+		if (isValidEmail(email)) {
+			await forgotPassword(email);
+			emailPasswordSent = true;
+			return;
+		}
+		forgotPasswordError = 'Please enter your email address.';
+	}
 </script>
 
 <div class="min-w-[300px]">
@@ -63,7 +74,7 @@
 			class="green-gradient-bg flex justify-center rounded p-2 font-bold text-white"
 		>
 			{#if loading}
-				<IconLoadingCircle size={50} color="currentColor" />
+				<IconLoadingCircle color="currentColor" />
 			{:else}
 				Login
 			{/if}
@@ -76,15 +87,26 @@
 	</div>
 
 	<div class="mt-10">
-		<p class="mt-4 text-center text-sm">
-			Don't have an account? <a href="/signup" class="text-green-600">Sign up</a>
+		<p class="mt-4 text-center text-lg">
+			Don't have an account? <a href="/" class="text-green-600">Sign up</a>
 		</p>
 	</div>
-	<div class="mt-4 text-center text-xs">
-		<button
-			on:click={() => forgotPassword(email)}
-			disabled={!email}
-			class={email ? '' : 'pointer-events-none'}>Forgot password</button
-		>
+
+	<div class="text-md mt-5 text-center">
+		{#if !emailPasswordSent}
+			<button on:click={() => handleForgotPassword()} class="rounded border p-0.5 px-3"
+				>Forgot password</button
+			>
+			{#if forgotPasswordError}
+				<div class="mt-1 w-full text-center text-sm">
+					<p class="text-red-400">{forgotPasswordError}</p>
+				</div>
+			{/if}
+		{/if}
+		{#if emailPasswordSent}
+			<div class="text-md w-full text-center">
+				<p class="text-gray-400">Email sent. Please check your inbox.</p>
+			</div>
+		{/if}
 	</div>
 </div>

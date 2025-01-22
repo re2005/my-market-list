@@ -3,11 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { addFriend } from '$lib/store';
 	import { derived } from 'svelte/store';
-
-	function isValidEmail(email: string) {
-		const emailRegex = /^[\w%+.-]+@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-		return emailRegex.test(email);
-	}
+	import { isValidEmail } from '$lib/auth';
 
 	const hasFriendQuery = derived(page, ($page) => {
 		const search = $page.url.searchParams.get('friend');

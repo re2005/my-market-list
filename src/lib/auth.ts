@@ -19,11 +19,16 @@ export async function login(email: string, password: string) {
 export function signUp(email: string, password: string) {
 	return createUserWithEmailAndPassword(firebaseAuth, email, password);
 }
-export function forgotPassword(email: string) {
+export async function forgotPassword(email: string) {
 	return sendPasswordResetEmail(firebaseAuth, email);
 }
 
 // Sign-out function
 export async function logout() {
 	await signOut(firebaseAuth);
+}
+
+export function isValidEmail(email: string) {
+	const emailRegex = /^[\w%+.-]+@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+	return emailRegex.test(email);
 }

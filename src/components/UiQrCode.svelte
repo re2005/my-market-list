@@ -5,17 +5,17 @@
 	let isQrCodeVisible = false;
 	let qrCodeElement: HTMLElement | null = null;
 
-	console.log(
-		`https://mymarketlist.vercel.app?friend=${$user?.uid};${encodeURIComponent($user?.email)}`
-	);
+	const appUrl = import.meta.env.VITE_APP_DOMAIN;
+
+	console.log(`${appUrl}?friend=${$user?.uid};${encodeURIComponent($user?.email)}`);
 
 	async function shareQrCode() {
 		const options = {
 			width: 180,
 			height: 180,
 			type: 'svg',
-			data: `https://mymarketlist.vercel.app?friend=${$user?.uid};${encodeURIComponent($user?.email)}`,
-			image: 'https://mymarketlist.vercel.app/my-market-list-logo.svg',
+			data: `${appUrl}?friend=${$user?.uid};${encodeURIComponent($user?.email)}`,
+			image: `/my-market-list-logo.svg`,
 			dotsOptions: {
 				type: 'rounded'
 			},

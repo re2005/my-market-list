@@ -7,6 +7,7 @@
 	import UiQrCode from '@components/UiQrCode.svelte';
 	import UiFriendRequest from '@components/UiFriendRequest.svelte';
 	import IconLoading from '@components/icons/icon-loading.svelte';
+	import UiSignUp from '@components/UiSignUp.svelte';
 </script>
 
 {#if $loading}
@@ -48,6 +49,6 @@
 			<UiQrCode />
 		</section>
 	{:else}
-		<UiLogin />
+		<UiSignUp />
 	{/if}
 </main>
