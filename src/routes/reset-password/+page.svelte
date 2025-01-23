@@ -1,4 +1,5 @@
 <script>
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { confirmPasswordReset } from 'firebase/auth';
 	import { firebaseAuth } from '$lib/firebase';
@@ -22,7 +23,9 @@
 		try {
 			await confirmPasswordReset(firebaseAuth, oobCode, newPassword);
 			successMessage = 'Password reset successfully.';
-			errorMessage = ''; // Clear any previous errors
+			errorMessage = '';
+
+			goto('/login');
 		} catch (error) {
 			errorMessage = 'Failed to reset password: ' + error.message;
 			successMessage = ''; // Clear success message

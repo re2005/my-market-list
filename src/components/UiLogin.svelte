@@ -9,6 +9,7 @@
 	let loading = false;
 	let forgotPasswordError: string | null = null;
 	let emailPasswordSent: boolean = false;
+	let loadingEmailPassword: boolean = false;
 
 	async function handleLogin(event: Event) {
 		event.preventDefault();
@@ -28,9 +29,16 @@
 
 	async function handleForgotPassword() {
 		if (isValidEmail(email)) {
-			await forgotPassword(email);
-			emailPasswordSent = true;
-			return;
+			try {
+				loadingEmailPassword = true;
+				await forgotPassword(email);
+				emailPasswordSent = true;
+				return;
+			} catch (error: any) {
+				forgotPasswordError = error.message || 'Failed to send email. Please try again.';
+			} finally {
+				loadingEmailPassword = false;
+			}
 		}
 		forgotPasswordError = 'Please enter your email address.';
 	}
@@ -94,9 +102,13 @@
 
 	<div class="text-md mt-5 text-center">
 		{#if !emailPasswordSent}
-			<button on:click={() => handleForgotPassword()} class="rounded border p-0.5 px-3"
-				>Forgot password</button
-			>
+			<button on:click={() => handleForgotPassword()} class="rounded border p-0.5 px-3">
+				{#if loadingEmailPassword}
+					<IconLoadingCircle classes="text-gray-300 w-6 h-6" />
+				{:else}
+					Reset password
+				{/if}
+			</button>
 			{#if forgotPasswordError}
 				<div class="mt-1 w-full text-center text-sm">
 					<p class="text-red-400">{forgotPasswordError}</p>
