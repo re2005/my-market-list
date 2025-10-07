@@ -35,43 +35,45 @@
 	}
 </script>
 
-<h1 class="text-2xl">Reset your password</h1>
+<div class="flex flex-col justify-center">
+	<h1 class="text-2xl">Reset your password</h1>
 
-<form on:submit|preventDefault={resetPassword}>
-	<div class="mt-10 flex flex-col gap-3">
-		<label for="password">
-			<p>New Password</p>
-			<input
-				bind:value={newPassword}
-				required
-				type="password"
-				name="New Password"
-				id="password"
-				placeholder="password"
-				autocomplete="current-password"
-				class="w-full rounded border p-3 text-black"
-			/>
-		</label>
+	<form on:submit|preventDefault={resetPassword}>
+		<div class="mt-10 flex flex-col gap-3">
+			<label for="password">
+				<p>New Password</p>
+				<input
+					bind:value={newPassword}
+					required
+					type="password"
+					name="New Password"
+					id="password"
+					placeholder="password"
+					autocomplete="current-password"
+					class="w-full rounded border p-3 text-black"
+				/>
+			</label>
 
-		<button
-			type="submit"
-			class="green-gradient-bg flex justify-center rounded p-2 font-bold text-white"
-		>
-			{#if loading}
-				<IconLoadingCircle color="currentColor" />
-			{:else}
-				Reset
-			{/if}
-		</button>
+			<button
+				type="submit"
+				class="green-gradient-bg flex justify-center rounded p-2 font-bold text-white"
+			>
+				{#if loading}
+					<IconLoadingCircle color="currentColor" />
+				{:else}
+					Reset
+				{/if}
+			</button>
+		</div>
+	</form>
+
+	<div class="mt-6">
+		{#if successMessage}
+			<p class="text-green-600">{successMessage}</p>
+		{/if}
+
+		{#if errorMessage}
+			<p class="text-red-600">{errorMessage}</p>
+		{/if}
 	</div>
-</form>
-
-<div class="mt-6">
-	{#if successMessage}
-		<p class="text-green-600">{successMessage}</p>
-	{/if}
-
-	{#if errorMessage}
-		<p class="text-red-600">{errorMessage}</p>
-	{/if}
 </div>

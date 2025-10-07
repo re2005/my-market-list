@@ -7,14 +7,12 @@
 
 	const appUrl = import.meta.env.VITE_APP_DOMAIN;
 
-	console.log(`${appUrl}?friend=${$user?.uid};${encodeURIComponent($user?.email)}`);
-
 	async function shareQrCode() {
 		const options = {
 			width: 180,
 			height: 180,
 			type: 'svg',
-			data: `${appUrl}?friend=${$user?.uid};${encodeURIComponent($user?.email)}`,
+			data: `${appUrl}?friend=${$user?.uid};${encodeURIComponent($user?.email as string)}`,
 			image: `/my-market-list-logo.svg`,
 			dotsOptions: {
 				type: 'rounded'
