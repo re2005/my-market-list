@@ -12,7 +12,10 @@ export default defineConfig({
 			registerType: 'autoUpdate',
 			minify: false,
 			workbox: {
-				mode: 'development'
+				mode: 'development',
+				modifyURLPrefix: {},
+				globPatterns: ['client/**/*.{js,css,ico,png,svg,webp,webmanifest}'],
+				globIgnores: ['prerendered/**/*']
 			},
 			devOptions: {
 				enabled: false
