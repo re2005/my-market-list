@@ -171,8 +171,6 @@ currentUid.subscribe((uid) => {
 
 	if (!uid) return;
 
-	console.log('Subscribing to list changes', uid);
-
 	loadingList.set(true);
 	const docRef = getData(uid);
 	unsubscribe = onValue(docRef, (snapshot) => {

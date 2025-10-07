@@ -15,13 +15,11 @@
 {/if}
 
 <main
-	class="flex justify-center gap-4 transition lg:gap-10 {$loading ? 'opacity-0' : 'opacity-100'}"
+	class="flex flex-col justify-center gap-4 transition lg:gap-10 {$loading
+		? 'opacity-0'
+		: 'opacity-100'}"
 >
 	{#if $user && !$loading}
-		{#if $loadingList}
-			<IconLoading classes="mx-auto" />
-		{/if}
-
 		<section class="flex w-full flex-col items-center gap-10 px-5">
 			<UiFriendRequest />
 
@@ -42,6 +40,7 @@
 			{/if}
 
 			<UiItemInput />
+
 			<UiList />
 
 			<UiUserInfo />

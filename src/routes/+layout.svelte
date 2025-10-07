@@ -3,7 +3,8 @@
 	import UiFooter from '@components/UiFooter.svelte';
 	import UiHeader from '@components/UiHeader.svelte';
 
-	let { children } = $props();
+	let { children, data } = $props<{ children: unknown; data: { buildNumber: string | null } }>();
+	const buildNumber = $derived.by(() => data?.buildNumber ?? null);
 </script>
 
 <svelte:head>
@@ -23,6 +24,6 @@
 		{@render children()}
 	</div>
 	<div class="mt-auto">
-		<UiFooter />
+		<UiFooter buildNumber={buildNumber} />
 	</div>
 </div>
