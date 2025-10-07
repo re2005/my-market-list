@@ -19,7 +19,7 @@
 	</div>
 	<div class="flex flex-col items-end gap-2">
 		<div class="flex gap-2">
-			<p>Lists connected</p>
+			<p>Lists connected:</p>
 			{#if $user?.uid !== $currentUid}
 				<button on:click={() => removeFriend($currentUid!)} class="color-red-400 text-xs"
 					>remove</button
