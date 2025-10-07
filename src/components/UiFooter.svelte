@@ -2,7 +2,6 @@
 	let { buildNumber } = $props<{ buildNumber?: string | null }>();
 	const currentYear = new Date().getFullYear();
 	const shortBuild = $derived.by(() => buildNumber?.slice(0, 10) ?? null);
-	console.log('Build number:', buildNumber);
 </script>
 
 <footer class="flex flex-col items-center justify-center gap-2 py-5">

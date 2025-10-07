@@ -1,6 +1,5 @@
 import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-import { SvelteKitPWA } from '@vite-pwa/sveltekit';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -16,12 +15,7 @@ const config = {
 		serviceWorker: {
 			register: true
 		}
-	},
-	plugins: [
-		SvelteKitPWA({
-			mode: 'production'
-		})
-	]
+	}
 };
 
 export default config;
