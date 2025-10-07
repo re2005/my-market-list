@@ -45,11 +45,14 @@
 				}
 			});
 
-			refreshInterval = setInterval(() => {
-				void updateServiceWorker().catch((error) => {
-					console.error('Periodic service worker update failed', error);
-				});
-			}, 15 * 60 * 1000);
+			refreshInterval = setInterval(
+				() => {
+					void updateServiceWorker().catch((error) => {
+						console.error('Periodic service worker update failed', error);
+					});
+				},
+				15 * 60 * 1000
+			);
 		} catch (error) {
 			console.error('Failed to load service worker registration helper', error);
 		}
@@ -87,6 +90,6 @@
 		{@render children()}
 	</div>
 	<div class="mt-auto">
-		<UiFooter buildNumber={buildNumber} />
+		<UiFooter {buildNumber} />
 	</div>
 </div>

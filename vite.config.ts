@@ -17,12 +17,12 @@ export default defineConfig({
 				enabled: true
 			},
 			workbox: {
-				globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
+				modifyURLPrefix: {},
+				globPatterns: [
+					'client/**/*.{js,css,html,ico,png,svg,webp,webmanifest,woff2}'
+				],
 				clientsClaim: true,
 				skipWaiting: true
-			},
-			kit: {
-				includeVersionFile: true
 			}
 		})
 	],
