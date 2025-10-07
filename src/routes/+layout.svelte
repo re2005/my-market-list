@@ -2,10 +2,13 @@
 	import '../app.css';
 	import UiFooter from '@components/UiFooter.svelte';
 	import UiHeader from '@components/UiHeader.svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	let { children, data } = $props<{ children: unknown; data: { buildNumber: string | null } }>();
 	const buildNumber = $derived.by(() => data?.buildNumber ?? null);
+
+	let refreshInterval: ReturnType<typeof setInterval> | undefined;
+	let registrationUpdateInterval: ReturnType<typeof setInterval> | undefined;
 
 	onMount(async () => {
 		if (!('serviceWorker' in navigator)) {
@@ -17,25 +20,53 @@
 			const updateServiceWorker = registerSW({
 				immediate: true,
 				onNeedRefresh() {
-					void updateServiceWorker().then(() => {
-						window.location.reload();
-					});
+					void updateServiceWorker()
+						.then(() => {
+							window.location.reload();
+						})
+						.catch((error) => {
+							console.error('Service worker refresh failed', error);
+						});
 				},
 				onRegisteredSW(_swUrl, registration) {
-					if (registration) {
-						const hourInMs = 60 * 60 * 1000;
-						setInterval(() => {
-							void registration.update();
-						}, hourInMs);
+					if (!registration) {
+						return;
 					}
+
+					const hourInMs = 60 * 60 * 1000;
+					registrationUpdateInterval = setInterval(() => {
+						void registration.update().catch((error) => {
+							console.error('Service worker registration update failed', error);
+						});
+					}, hourInMs);
 				},
 				onRegisterError(error) {
 					console.error('Service worker registration failed', error);
 				}
 			});
+
+			refreshInterval = setInterval(() => {
+				void updateServiceWorker().catch((error) => {
+					console.error('Periodic service worker update failed', error);
+				});
+			}, 15 * 60 * 1000);
 		} catch (error) {
 			console.error('Failed to load service worker registration helper', error);
 		}
+	});
+
+	onDestroy(() => {
+		const clear = (interval?: ReturnType<typeof setInterval>) => {
+			if (interval) {
+				clearInterval(interval);
+			}
+		};
+
+		clear(refreshInterval);
+		clear(registrationUpdateInterval);
+
+		refreshInterval = undefined;
+		registrationUpdateInterval = undefined;
 	});
 </script>
 
