@@ -13,15 +13,16 @@ export default defineConfig({
 		SvelteKitPWA({
 			manifest: pwaManifest,
 			registerType: 'autoUpdate',
-			minify: false,
-			workbox: {
-				mode: 'development',
-				modifyURLPrefix: {},
-				globPatterns: ['client/**/*.{js,css,ico,png,svg,webp,webmanifest}'],
-				globIgnores: ['prerendered/**/*']
-			},
 			devOptions: {
-				enabled: false
+				enabled: true
+			},
+			workbox: {
+				globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
+				clientsClaim: true,
+				skipWaiting: true
+			},
+			kit: {
+				includeVersionFile: true
 			}
 		})
 	],

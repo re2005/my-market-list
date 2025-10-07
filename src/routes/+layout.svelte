@@ -2,9 +2,41 @@
 	import '../app.css';
 	import UiFooter from '@components/UiFooter.svelte';
 	import UiHeader from '@components/UiHeader.svelte';
+	import { onMount } from 'svelte';
 
 	let { children, data } = $props<{ children: unknown; data: { buildNumber: string | null } }>();
 	const buildNumber = $derived.by(() => data?.buildNumber ?? null);
+
+	onMount(async () => {
+		if (!('serviceWorker' in navigator)) {
+			return;
+		}
+
+		try {
+			const { registerSW } = await import('virtual:pwa-register');
+			const updateServiceWorker = registerSW({
+				immediate: true,
+				onNeedRefresh() {
+					void updateServiceWorker().then(() => {
+						window.location.reload();
+					});
+				},
+				onRegisteredSW(_swUrl, registration) {
+					if (registration) {
+						const hourInMs = 60 * 60 * 1000;
+						setInterval(() => {
+							void registration.update();
+						}, hourInMs);
+					}
+				},
+				onRegisterError(error) {
+					console.error('Service worker registration failed', error);
+				}
+			});
+		} catch (error) {
+			console.error('Failed to load service worker registration helper', error);
+		}
+	});
 </script>
 
 <svelte:head>
