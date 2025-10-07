@@ -41,7 +41,7 @@
 	}
 </script>
 
-<div class="min-w-[300px]">
+<div class="min-w-[300px] px-11">
 	<p class="text-center text-2xl">Register to create a list</p>
 	<form on:submit|preventDefault={handleForm} class="mt-6 flex flex-col gap-4">
 		<div class="flex flex-col gap-3">
