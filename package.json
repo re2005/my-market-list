@@ -35,5 +35,8 @@
 	"dependencies": {
 		"firebase": "^11.0.2",
 		"qr-code-styling": "^1.8.4"
+	},
+	"optionalDependencies": {
+		"@rollup/rollup-linux-x64-gnu": "4.27.3"
 	}
 }
