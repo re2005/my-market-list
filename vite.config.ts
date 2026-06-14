@@ -14,7 +14,8 @@ export default defineConfig({
 			manifest: pwaManifest,
 			registerType: 'autoUpdate',
 			devOptions: {
-				enabled: true
+				enabled: true,
+				suppressWarnings: true
 			},
 			workbox: {
 				modifyURLPrefix: {},
